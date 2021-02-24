@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Warehouse.Areas.Identity.Data;
 
 namespace Warehouse
 {
@@ -23,8 +25,15 @@ namespace Warehouse
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //Добавляем контекст для базы данных, и MS SQL в качестве СУБД
+            services.AddDbContext<ApplicationDbContext>(options =>
+             options.UseSqlServer(
+                 Configuration.GetConnectionString("DefaultConnection")));
+            //Добавляем поддержку MVC  
             services.AddMvc().AddRazorRuntimeCompilation();
+            //Добавляем поддержку страниц Razor 
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            //Добавляем политику авторизации  
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminArea",
@@ -48,10 +57,10 @@ namespace Warehouse
 
             //Включаем поддержку статических файлов
             app.UseStaticFiles();
-            
+
             app.UseCors();
             app.UseRouting();
-            
+
             //Подключаем сервисы аутентификации и авторизации
             app.UseAuthentication();
             app.UseAuthorization();
@@ -61,10 +70,6 @@ namespace Warehouse
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
-
-
-
-
 
         }
     }
