@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\" />
-    <Folder Include="Model\" />
     <Folder Include="Views\" />
     <Folder Include="Controllers\" />
     <Folder Include="wwwroot\" />
