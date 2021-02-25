@@ -25,20 +25,29 @@ namespace Warehouse
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //Добавляем контекст для базы данных, и MS SQL в качестве СУБД
+            ////Р”РѕР±Р°РІР»СЏРµРј РєРѕРЅС‚РµРєСЃС‚ РґР»СЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С…, Рё MS SQL РІ РєР°С‡РµСЃС‚РІРµ РЎРЈР‘Р”
             services.AddDbContext<ApplicationDbContext>(options =>
-             options.UseSqlServer(
-                 Configuration.GetConnectionString("DefaultConnection")));
-            //Добавляем поддержку MVC  
-            services.AddMvc().AddRazorRuntimeCompilation();
-            //Добавляем поддержку страниц Razor 
-            services.AddRazorPages().AddRazorRuntimeCompilation();
-            //Добавляем политику авторизации  
-            services.AddAuthorization(options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<WarehouseUser>(options =>
             {
-                options.AddPolicy("AdminArea",
-                     policy => policy.RequireRole("Admin"));
-            });
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //Р”РѕР±Р°РІР»СЏРµРј РїРѕРґРґРµСЂР¶РєСѓ MVC  
+            services.AddMvc().AddRazorRuntimeCompilation();
+            //Р”РѕР±Р°РІР»СЏРµРј РїРѕРґРґРµСЂР¶РєСѓ СЃС‚СЂР°РЅРёС† Razor 
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+            //Р”РѕР±Р°РІР»СЏРµРј РїРѕР»РёС‚РёРєСѓ Р°РІС‚РѕСЂРёР·Р°С†РёРё  
+            services.AddAuthorization(options =>
+                {
+                    options.AddPolicy("AdminArea",
+                         policy => policy.RequireRole("Admin"));
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,21 +64,27 @@ namespace Warehouse
                 app.UseHsts();
             }
 
-            //Включаем поддержку статических файлов
+            app.UseHttpsRedirection();
+            //Р’РєР»СЋС‡Р°РµРј РїРѕРґРґРµСЂР¶РєСѓ СЃС‚Р°С‚РёС‡РµСЃРєРёС… С„Р°Р№Р»РѕРІ
             app.UseStaticFiles();
 
-            app.UseCors();
+            //CORS (Cross Origin Resource Sharing)РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ С†РµР»СЏС… Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё 
+            //Р±СЂР°СѓР·РµСЂ РѕРіСЂР°РЅРёС‡РёРІР°РµС‚ ajax-Р·Р°РїСЂРѕСЃС‹ РјРµР¶РґСѓ СЂР°Р·Р»РёС‡РЅС‹РјРё РґРѕРјРµРЅР°РјРё
+            app.UseCors(build => build.AllowAnyOrigin());
+
             app.UseRouting();
 
-            //Подключаем сервисы аутентификации и авторизации
+            //РџРѕРґРєР»СЋС‡Р°РµРј СЃРµСЂРІРёСЃС‹ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё Рё Р°РІС‚РѕСЂРёР·Р°С†РёРё
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(name: "default",pattern: "{controller=Items}/{action=Index}/{id?}");
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+
 
         }
     }

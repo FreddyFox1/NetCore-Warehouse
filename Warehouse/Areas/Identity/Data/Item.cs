@@ -5,14 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Warehouse.Model
+namespace Warehouse.Areas.Identity.Data
 {
     public class Item
     {
         [Key]
         [Display(Name = "ID")]
         public int ItemID { get; set; }
-
         [Display(Name = "Фото")]
         public string ItemPhoto { get; set; } = "noimage.jpg";
 
@@ -49,12 +48,12 @@ namespace Warehouse.Model
         [Display(Name = "Закрытая позиция")]
         public bool ItemProtect { get; set; }
 
-        [ForeignKey("ItemCategory")]
         [Display(Name = "ID категории:")]
         public int CategoryID { get; set; }
 
         [Display(Name = "Категория:")]
         public ItemCategory Category { get; set; }
+
 
     }
 }

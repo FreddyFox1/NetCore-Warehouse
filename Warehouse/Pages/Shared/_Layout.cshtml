@@ -34,6 +34,9 @@
                             "usually located at '/Pages/_LoginPartial' or at '/Views/Shared/_LoginPartial' to work. Based on your configuration " +
                             $"we have looked at it in the following locations: {System.Environment.NewLine}{string.Join(System.Environment.NewLine, result.SearchedLocations)}.");
                     }
+                    <ul class="navbar-nav flex-grow-1">
+                        <partial name="_MenuPartial" />
+                    </ul>
                 </div>
             </div>
         </nav>

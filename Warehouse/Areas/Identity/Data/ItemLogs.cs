@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-namespace Warehouse.Model
+namespace Warehouse.Areas.Identity.Data
 {
     public class ItemLogs
     {

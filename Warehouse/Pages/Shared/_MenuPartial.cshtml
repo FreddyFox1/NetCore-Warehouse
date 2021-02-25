@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject SignInManager<WarehouseUser> SignInManager
+@inject UserManager<WarehouseUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="">Журнал событий</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="">Перемещение матриц</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-page="">Список матриц</a>
+    </li>
+}
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="">Панель управления</a>
+    </li>
+}
