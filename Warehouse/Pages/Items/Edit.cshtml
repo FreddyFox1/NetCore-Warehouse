@@ -1,0 +1,91 @@
+﻿@page
+@model Warehouse.Pages.Items.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Item</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Item.ItemID" />
+            <div class="form-group">
+                <label asp-for="Item.ItemPhoto" class="control-label"></label>
+                <input asp-for="Item.ItemPhoto" class="form-control" />
+                <span asp-validation-for="Item.ItemPhoto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.ItemName" class="control-label"></label>
+                <input asp-for="Item.ItemName" class="form-control" />
+                <span asp-validation-for="Item.ItemName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.ItemArticle" class="control-label"></label>
+                <input asp-for="Item.ItemArticle" class="form-control" />
+                <span asp-validation-for="Item.ItemArticle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.ItemStorageID" class="control-label"></label>
+                <input asp-for="Item.ItemStorageID" class="form-control" />
+                <span asp-validation-for="Item.ItemStorageID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.DateTransferItem" class="control-label"></label>
+                <input asp-for="Item.DateTransferItem" class="form-control" />
+                <span asp-validation-for="Item.DateTransferItem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.Creator" class="control-label"></label>
+                <input asp-for="Item.Creator" class="form-control" />
+                <span asp-validation-for="Item.Creator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.ItemDescription" class="control-label"></label>
+                <input asp-for="Item.ItemDescription" class="form-control" />
+                <span asp-validation-for="Item.ItemDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.ItemSizes" class="control-label"></label>
+                <input asp-for="Item.ItemSizes" class="form-control" />
+                <span asp-validation-for="Item.ItemSizes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.ItemCount" class="control-label"></label>
+                <input asp-for="Item.ItemCount" class="form-control" />
+                <span asp-validation-for="Item.ItemCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.ItemCell" class="control-label"></label>
+                <input asp-for="Item.ItemCell" class="form-control" />
+                <span asp-validation-for="Item.ItemCell" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Item.ItemProtect" /> @Html.DisplayNameFor(model => model.Item.ItemProtect)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.CategoryID" class="control-label"></label>
+                <select asp-for="Item.CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
+                <span asp-validation-for="Item.CategoryID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
