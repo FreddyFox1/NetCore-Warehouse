@@ -1,0 +1,103 @@
+﻿@page
+@model Warehouse.Pages.Items.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemPhoto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemArticle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemStorageID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].DateTransferItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].Creator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemSizes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemCell)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].ItemProtect)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item[0].Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Item) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemPhoto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemArticle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemStorageID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTransferItem)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Creator)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemSizes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemCell)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemProtect)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ItemID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ItemID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ItemID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
