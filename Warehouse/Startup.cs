@@ -80,7 +80,7 @@ namespace Warehouse
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(name: "default",pattern: "{controller=Items}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(name: "default",pattern: "{controller=Items}/{action=Index}");
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
