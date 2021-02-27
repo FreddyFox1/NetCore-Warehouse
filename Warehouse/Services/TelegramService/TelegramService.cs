@@ -10,6 +10,7 @@ using Telegram.Bot.Types.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot.Args;
+using Microsoft.Extensions.Options;
 
 namespace Warehouse.Services.TelegramService
 {
@@ -17,12 +18,23 @@ namespace Warehouse.Services.TelegramService
     {
         private static ILogger<TelegramService> _logger;
         private Timer timer;
-        private TelegramBotClient telegramClient = new TelegramBotClient("1679002332:AAFmai6ZuuAnQ5MAlhOtjI6HmqFlAMSE--o");
+        private TelegramBotClient telegramClient;
+        private readonly IOptions<TelegramKey> telegramKey;
 
-        public TelegramService(ILogger<TelegramService> logger)
+        public TelegramService(ILogger<TelegramService> logger,
+            IOptions<TelegramKey> _telegramKey)
         {
             _logger = logger;
+            telegramKey = _telegramKey;
+            telegramClient = new TelegramBotClient(telegramKey.Value.AuthKey);
         }
+
+        /// <summary>
+        /// Подписываемся на событие обновления сообщений, 
+        /// и начинаем прослушивать сообщения которые летят к боту
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Telegram service started");
