@@ -20,12 +20,19 @@ namespace Warehouse
         private readonly IWebHostEnvironment _env;
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
-            Configuration = configuration;
             _env = env;
+            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("TelegramService.json");
+            Configuration = builder.Build();
+
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.Configure<TelegramKey>(Configuration.GetSection("Telegram"));
             //Добавляем контекст для базы данных, и MS SQL в качестве СУБД
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
@@ -52,6 +59,7 @@ namespace Warehouse
 
             //Добавлем сервис для работы Telegram бота в фоновом режиме 
             services.AddHostedService<TelegramService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
