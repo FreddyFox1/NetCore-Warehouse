@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Warehouse.Services.TelegramService
 {
-    interface ITelegramService
+    interface ITelegramDB
     {
-        Task getUpdates();
+        void SaveUser();
+        List<TelegramEntity> GetTelegramEntities();
     }
 }
