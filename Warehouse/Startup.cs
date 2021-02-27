@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Warehouse.Areas.Identity.Data;
+using Warehouse.Services.TelegramService;
 
 namespace Warehouse
 {
@@ -25,7 +26,7 @@ namespace Warehouse
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ////Добавляем контекст для базы данных, и MS SQL в качестве СУБД
+            //Добавляем контекст для базы данных, и MS SQL в качестве СУБД
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
@@ -48,6 +49,9 @@ namespace Warehouse
                     options.AddPolicy("AdminArea",
                          policy => policy.RequireRole("Admin"));
                 });
+
+            //Добавлем сервис для работы Telegram бота в фоновом режиме 
+            services.AddHostedService<TelegramService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,7 +84,7 @@ namespace Warehouse
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(name: "default",pattern: "{controller=Items}/{action=Index}");
+                endpoints.MapControllerRoute(name: "default", pattern: "{controller=Items}/{action=Index}");
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
