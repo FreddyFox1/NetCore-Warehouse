@@ -21,8 +21,7 @@ namespace Warehouse.Services.TelegramService
         private TelegramBotClient telegramClient;
         private readonly IOptions<TelegramKey> telegramKey;
 
-        public TelegramService(ILogger<TelegramService> logger,
-            IOptions<TelegramKey> _telegramKey)
+        public TelegramService(ILogger<TelegramService> logger, IOptions<TelegramKey> _telegramKey)
         {
             _logger = logger;
             telegramKey = _telegramKey;
@@ -49,23 +48,29 @@ namespace Warehouse.Services.TelegramService
 
             return Task.CompletedTask;
         }
-
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Telegram service was stoped");
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Получение обновлений от Telegram API
+        /// </summary>
         public void GetUpdates()
         {
             telegramClient.StartReceiving(Array.Empty<UpdateType>());
         }
 
+        /// <summary>
+        /// Отправка уведомлений
+        /// </summary>
         public void SendNotification()
         {
             throw new NotImplementedException();
         }
 
+        //Событие получение обновлений
         private static async void OnUpdateReceived(object sender, UpdateEventArgs e)
         {
             var message = e.Update.Message;
