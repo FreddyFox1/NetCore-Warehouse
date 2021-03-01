@@ -22,6 +22,8 @@ namespace Warehouse
         {
             _env = env;
             Configuration = configuration;
+            
+            //Добавляем JSON файлы с настройками приложения
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile("TelegramService.json");
@@ -31,13 +33,14 @@ namespace Warehouse
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //Забираем ключ из JSON файла для работы с API Telegram
             services.Configure<TelegramKey>(Configuration.GetSection("Telegram"));
+            
             //Добавляем контекст для базы данных, и MS SQL в качестве СУБД
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
-
+            //Настройка пароля для стандартной системы авторизации пользователей
             services.AddDefaultIdentity<WarehouseUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
