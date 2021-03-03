@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Список матриц";
 }
-
 <div class="container">
     <div class="row justify-content-center align-items-center">
         <div class="col-9">
@@ -15,7 +14,7 @@
     <div class="row pt-2 pb-1">
         <div class="col-6">
             <div class="input-group">
-                <select onchange="" name="" class="custom-select" id="inputGroupSelect04">
+                <select onchange="ShowCategory(this.value)" name="SelecterCategory" class="custom-select" id="inputGroupSelect04" asp-items="Model.GroupsList">
                     <option value="All">Выберите категорию</option>
                 </select>
                 <div class="input-group-append pr-1">
@@ -23,59 +22,58 @@
                 </div>
             </div>
         </div>
-        <div class="col-3"></div>
-        <div class="col-3"><a asp-page="Create" class="btn btn-info form-control text-white">Добавить матрицу</a></div>
+        @if (!User.IsInRole("Watcher"))
+        {
+            <div class="col-3"></div>
+            <div class="col-3"><a asp-page="Create" class="btn btn-info form-control text-white">Добавить матрицу</a></div>
+        }
     </div>
 
-    <hr>
+    <hr class="pt-2">
     <table id="DT_Items" class="display text-center table-striped table-bordered" width="100%">
         <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Item[0].ItemPhoto)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Item[0].ItemName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Item[0].ItemArticle)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Item[0].ItemStorageID)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Item[0].ItemDescription)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Item[0].ItemSizes)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Item[0].ItemCount)
-                </th>
-
-                <th><img src="~/icons/IconCell-black.png" height="20"></th>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.Item[0].Category)
-                </th>
                 <th></th>
+                <th>Фото</th>
+                <th>Название</th>
+                <th>Артикул</th>
+                <th>Размер</th>
+                <th>Склад</th>
+                <th>Шт</th>
+                <th><img src="~/css/icons/IconCell-black.png" height="20"></th>
+
+                @if (!User.IsInRole("Watcher"))
+                {
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                }
+                else
+                {
+                    <th></th>
+                }
+
             </tr>
         </thead>
     </table>
 </div>
 
+@section Scripts{
+
 <script src="~/js/ItemsList.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".myfancybox").fancybox({});
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".myframe").fancybox({
-            iframe: {
-                scrolling: 'yes',
-            },
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".myfancybox").fancybox({});
         });
-    });
-</script>
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".myframe").fancybox({
+                iframe: {
+                    scrolling: 'yes',
+                },
+            });
+        });
+    </script>
+}

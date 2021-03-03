@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualStudio.Web.CodeGeneration.Templating;
 using Warehouse.Areas.Identity.Data;
 
 namespace Warehouse.Pages.Items
@@ -14,18 +17,31 @@ namespace Warehouse.Pages.Items
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-
-        public IndexModel(ApplicationDbContext context)
+        private readonly ILogger<IndexModel> _logger;
+        public List<SelectListItem> GroupsList { get; set; }
+        public IndexModel(ApplicationDbContext context, ILogger<IndexModel> logger)
         {
+            _logger = logger;
             _context = context;
         }
 
-        public IList<Item> Item { get;set; }
-
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            Item = await _context.Items
-                .Include(i => i.Category).ToListAsync();
+            GroupsList = _context.ItemsCategories.Select(a =>
+                       new SelectListItem
+                       {
+                           Value = a.CategoryName.ToString(),
+                           Text = a.CategoryName + " (" + _context.Items.Where(b => b.CategoryID == a.CategoryID).Count() + ')'
+                       }).ToList();
+            
+            //var Count = _context.Items.Where(a => a.CategoryID == null).Count();
+            //GroupsList.Add(new SelectListItem
+            //{
+            //    Value = "NaN",
+            //    Text = String.Format("Без категории ({0})", Count)
+            //});
+
         }
+
     }
 }
