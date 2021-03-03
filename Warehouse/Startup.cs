@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,7 @@ namespace Warehouse
         {
             _env = env;
             Configuration = configuration;
-            
+
             //Добавляем JSON файлы с настройками приложения
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -35,19 +36,20 @@ namespace Warehouse
         {
             //Забираем ключ из JSON файла для работы с API Telegram
             services.Configure<TelegramKey>(Configuration.GetSection("Telegram"));
-            
+
             //Добавляем контекст для базы данных, и MS SQL в качестве СУБД
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
             //Настройка пароля для стандартной системы авторизации пользователей
+            //Добавление ролей пользователей
             services.AddDefaultIdentity<WarehouseUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequiredLength = 8;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+            }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             //Добавляем поддержку MVC  
             services.AddMvc().AddRazorRuntimeCompilation();
@@ -55,10 +57,16 @@ namespace Warehouse
             services.AddRazorPages().AddRazorRuntimeCompilation();
             //Добавляем политику авторизации  
             services.AddAuthorization(options =>
-                {
-                    options.AddPolicy("AdminArea",
-                         policy => policy.RequireRole("Admin"));
-                });
+            {
+                options.AddPolicy("AdminArea",
+                     policy => policy.RequireRole("Admin"));
+                options.AddPolicy("UserArea",
+                     policy => policy.RequireRole("Admin", "User"));
+                options.AddPolicy("WatcherArea",
+                     policy => policy.RequireRole("Admin", "User", "Watcher"));
+                options.AddPolicy("DriverArea",
+                    policy => policy.RequireRole("Driver", "Admin", "User"));
+            });
 
             //Добавлем сервис для работы Telegram бота в фоновом режиме 
             services.AddHostedService<TelegramService>();
