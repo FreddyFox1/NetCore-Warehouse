@@ -2,88 +2,107 @@
 @model Warehouse.Pages.Items.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Добавить матрицу";
 }
-
-<h1>Create</h1>
-
-<h4>Item</h4>
+<h1>Добавление новой матрицы</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
+            <div hidden>
+                <input asp-for="Creator" class="form-control" />
+            </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Item.ItemPhoto" class="control-label"></label>
-                <input asp-for="Item.ItemPhoto" class="form-control" />
-                <span asp-validation-for="Item.ItemPhoto" class="text-danger"></span>
+                <label asp-for="Items.ItemName" class="control-label"></label>
+                <input asp-for="Items.ItemName" class="form-control" />
+                <span asp-validation-for="Items.ItemName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemName" class="control-label"></label>
-                <input asp-for="Item.ItemName" class="form-control" />
-                <span asp-validation-for="Item.ItemName" class="text-danger"></span>
+                <label asp-for="Items.ItemArticle" class="control-label"></label>
+                <input asp-for="Items.ItemArticle" class="form-control IArticle" />
+                <span asp-validation-for="Items.ItemArticle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemArticle" class="control-label"></label>
-                <input asp-for="Item.ItemArticle" class="form-control" />
-                <span asp-validation-for="Item.ItemArticle" class="text-danger"></span>
+                <label asp-for="Items.ItemStorageID" class="control-label"></label>
+                <select name="StorageValue" class="custom-select form-control">
+                    <option selected value="">Выберите склад</option>
+                    <option value="Модельный цех">Модельный цех</option>
+                    <option value="Альком">Альком</option>
+                    <option value="Автозавод">Автозавод</option>
+                    <option value="Своя формовка">Своя формовка</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemStorageID" class="control-label"></label>
-                <input asp-for="Item.ItemStorageID" class="form-control" />
-                <span asp-validation-for="Item.ItemStorageID" class="text-danger"></span>
+                <label asp-for="Items.CategoryID" class="control-label"></label>
+                <div class="row">
+                    <div class="col-10">
+                        @Html.DropDownListFor(m => m.SelectedCategory, Model.ItemGroup, "Выберите категорию", new
+                   { @class = "custom-select" })
+                    </div>
+                    <div class="col-2">
+                        <a href="/Groups/Create"><img width="34" src="https://img.icons8.com/color/48/000000/add.png" /></a>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Item.DateTransferItem" class="control-label"></label>
-                <input asp-for="Item.DateTransferItem" class="form-control" />
-                <span asp-validation-for="Item.DateTransferItem" class="text-danger"></span>
+                <label asp-for="Items.ItemSizes"></label>
+                <textarea asp-for="Items.ItemSizes" class="form-control" rows="1" id="comment"></textarea>
             </div>
             <div class="form-group">
-                <label asp-for="Item.Creator" class="control-label"></label>
-                <input asp-for="Item.Creator" class="form-control" />
-                <span asp-validation-for="Item.Creator" class="text-danger"></span>
+                <label asp-for="Items.ItemCount" class="control-label"></label>
+                <input asp-for="Items.ItemCount" value="1" min="1" maxlength="2" class="form-control col-3 text-center" />
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemDescription" class="control-label"></label>
-                <input asp-for="Item.ItemDescription" class="form-control" />
-                <span asp-validation-for="Item.ItemDescription" class="text-danger"></span>
+                <label asp-for="Items.ItemCell" class="control-label"></label>
+                <input asp-for="Items.ItemCell" maxlength="5" class="form-control col-3 text-center" />
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemSizes" class="control-label"></label>
-                <input asp-for="Item.ItemSizes" class="form-control" />
-                <span asp-validation-for="Item.ItemSizes" class="text-danger"></span>
+                <label asp-for="Items.ItemDescription"></label>
+                <textarea asp-for="Items.ItemDescription" class="form-control" rows="3" id="comment" maxlength="160"></textarea>
             </div>
-            <div class="form-group">
-                <label asp-for="Item.ItemCount" class="control-label"></label>
-                <input asp-for="Item.ItemCount" class="form-control" />
-                <span asp-validation-for="Item.ItemCount" class="text-danger"></span>
+            <div class="row pt-1 pb-4">
+                <span class="col-6"></span>
+                <div class="custom-control col-6 ">
+                    <div class="custom-checkbox float-right">
+                        <input asp-for="Items.ItemProtect" type="checkbox" class="custom-control-input" id="ProtectCheckbox">
+                        <label asp-for="Items.ItemProtect" class="custom-control-label" for="ProtectCheckbox" title="Отметить если позиция предназначена только для собственной формовки">Закрытая позиция</label>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Item.ItemCell" class="control-label"></label>
-                <input asp-for="Item.ItemCell" class="form-control" />
-                <span asp-validation-for="Item.ItemCell" class="text-danger"></span>
+            <img hidden id="imagePreview" src="/css/icons/noimage.jpg" height="260" />
+            <div class="form-group row pt-1">
+                <div class="col-12">
+                    <div class="custom-file">
+                        <label asp-for="Items.ItemPhoto" class="control-label custom-file-label"></label>
+                        <input class="custom-file-input" type="file" asp-for="Image" onchange="ShowPreview(event)" />
+                    </div>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Item.ItemProtect" /> @Html.DisplayNameFor(model => model.Item.ItemProtect)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Item.CategoryID" class="control-label"></label>
-                <select asp-for="Item.CategoryID" class ="form-control" asp-items="ViewBag.CategoryID"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="row">
+                <div class="col-6">
+                    <input type="submit" value="Добавить" class="btn btn-primary" />
+                </div>
+                <div class="col-6 my-auto">
+                    <a asp-page="Index">Вернуться к списку</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/lib/cleave.min.js"></script>
+    <script>
+        var cleaveCustom = new Cleave('.IArticle', {
+            blocks: [3, 3, 3, 3],
+            delimiter: '-',
+        });
+    </script>
+    <script src="~/js/ImagePreview.js"></script>
 }
