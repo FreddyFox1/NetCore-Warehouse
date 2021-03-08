@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Warehouse.Areas.Identity.Data
+namespace Warehouse.Model
 {
     public class ApplicationDbContext : IdentityDbContext<WarehouseUser>
     {

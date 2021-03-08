@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Warehouse.Areas.Identity.Data
+namespace Warehouse.Model
 {
     public class ItemCategory
     {
