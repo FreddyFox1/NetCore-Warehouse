@@ -57,7 +57,7 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
-  overflow:auto;
+  overflow:hidden;
   white-space: nowrap;
   /* Set the fixed height of the footer here */
   height: 60px;
@@ -65,19 +65,16 @@ body {
 }
 
 .user-icon {
-    height: 55px;
-    width: 55px;
+    height: 45px;
+    width: 45px;
     background-color: #FFB45B;
 }
 
 .but-exit {
     display: flex;
-    justify-content: center;
-    width: 90px;
-    height: 30px;
+    align-self: center;
     background-color: #DAD8D8;
     border-radius: 5px;
-
 }
 
 .score{
@@ -92,4 +89,20 @@ body {
     text-align: center;
     justify-content: center;
     align-content: center;
+}
+
+.tbImg {
+    max-height: 90px;
+    min-height: 60px;
+    max-width: 100px;
+    text-align: center;
+}
+
+td.details-control {
+    background: url('/icons/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+
+tr.shown td.details-control {
+    background: url('/icons/details_close.png') no-repeat center center;
 }
