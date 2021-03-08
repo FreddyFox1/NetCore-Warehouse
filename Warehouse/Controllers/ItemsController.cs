@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Warehouse.Areas.Identity.Data;
+using Warehouse.Model;
 
 namespace Warehouse.Controllers
 {
