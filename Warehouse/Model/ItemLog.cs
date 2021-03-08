@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace Warehouse.Model
 {
-    public class ItemLogs
+    public class ItemLog
     {
         public int ID { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Warehouse.Services.TelegramService;
 
 namespace Warehouse.Model
 {
@@ -13,13 +14,12 @@ namespace Warehouse.Model
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
         }
 
         public DbSet<Item> Items { get; set; }
+        public DbSet<ItemLog> ItemLogs { get; set; }
         public DbSet<ItemCategory> ItemsCategories { get; set; }
+        public DbSet<TelegramEntity> TelegramEntities { get; set; }
         
     }
 }
