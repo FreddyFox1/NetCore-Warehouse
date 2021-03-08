@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Создать новую роль";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<h2>Добавление роли</h2>
+<hr />
+
+<form asp-action="Create" method="post">
+    <div class="col-4">
+        <div class="form-group">
+            <label for="name">Новая роль</label>
+            <input name="name" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </div>
+</form>

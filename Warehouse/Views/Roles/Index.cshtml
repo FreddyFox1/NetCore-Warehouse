@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<h2>Список ролей</h2>
+<hr />
+
+<div class="col-3 flex-column">
+    @foreach (var role in Model)
+    {
+        <div class="d-flex m-1 p-1 flex-row justify-content-between">
+            <p class="">@role.Name </p>
+            <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+        </div>
+
+    }
+</div>
+
+
+<a asp-action="Create" asp-controller="Roles">Добавить роль</a>
+<a asp-page="admin">"Список пользователей</a>
