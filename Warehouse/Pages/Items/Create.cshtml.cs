@@ -11,8 +11,6 @@ using Warehouse.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 using Warehouse.Model;
 
 namespace Warehouse.Pages.Items
@@ -63,7 +61,7 @@ namespace Warehouse.Pages.Items
             ItemGroup =  _context.ItemsCategories.Select(a =>
                        new SelectListItem
                        {
-                           Value = a.CategoryName.ToString(),
+                           Value = a.CategoryID.ToString(),
                            Text = a.CategoryName
                        }).ToList();
         }
@@ -116,7 +114,6 @@ namespace Warehouse.Pages.Items
                 return Page();
             }
         }
-
 
         public bool ValidArticle(string Article)
         {
