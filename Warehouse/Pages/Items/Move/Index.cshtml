@@ -1,0 +1,40 @@
+﻿@page
+@model Warehouse.Pages.Items.Move.IndexModel
+@{
+    ViewData["Title"] = "Перемещение матриц";
+}
+<h1 class="pb-3">Перемещение матриц</h1>
+<div class="container ">
+    <table class="table table-reflow text-center table-striped table-bordered" id="TableItems">
+        <thead class="thead-dark">
+            <tr>
+                <th>Фото</th>
+                <th>Название</th>
+                <th>Артикул</th>
+                <th>Статус</th>
+                <th>Размеры</th>
+                <th><img src="~/icons/IconCell.png" height="20"></th>
+                <th>Склады</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/ItemsMove.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".myfancybox").fancybox({});
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".myframe").fancybox({
+                iframe: {
+                    scrolling: 'yes',
+                },
+            });
+        });
+    </script>
+}
