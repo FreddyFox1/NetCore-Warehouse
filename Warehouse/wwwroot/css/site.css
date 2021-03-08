@@ -51,15 +51,45 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  margin-bottom: 70px;
 }
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  overflow: scroll;
+  overflow:auto;
   white-space: nowrap;
   /* Set the fixed height of the footer here */
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
+}
+
+.user-icon {
+    height: 55px;
+    width: 55px;
+    background-color: #FFB45B;
+}
+
+.but-exit {
+    display: flex;
+    justify-content: center;
+    width: 90px;
+    height: 30px;
+    background-color: #DAD8D8;
+    border-radius: 5px;
+
+}
+
+.score{
+    display: flex;
+    float: right;
+    font-size: 12px;
+    height:20px;
+    width: 20px;
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
 }

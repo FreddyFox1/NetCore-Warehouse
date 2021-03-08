@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.23.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.3" />
@@ -26,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
+    <Folder Include="Areas\Identity\Data\" />
     <Folder Include="wwwroot\icons\" />
   </ItemGroup>
 
