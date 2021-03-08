@@ -1,91 +1,108 @@
 ﻿@page
 @model Warehouse.Pages.Items.EditModel
-
 @{
-    ViewData["Title"] = "Edit";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Редактирование";
 }
 
-<h1>Edit</h1>
-
-<h4>Item</h4>
+<h1>Редактирование</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Item.ItemID" />
+            <input id="_itemID" type="hidden" asp-for="Items.ItemID" />
+            <input id="_storageItem" type="hidden" asp-for="Items.ItemStorageID" />
             <div class="form-group">
-                <label asp-for="Item.ItemPhoto" class="control-label"></label>
-                <input asp-for="Item.ItemPhoto" class="form-control" />
-                <span asp-validation-for="Item.ItemPhoto" class="text-danger"></span>
+                <label asp-for="Items.ItemName" class="control-label"></label>
+                <input asp-for="Items.ItemName" class="form-control" />
+                <span asp-validation-for="Items.ItemName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemName" class="control-label"></label>
-                <input asp-for="Item.ItemName" class="form-control" />
-                <span asp-validation-for="Item.ItemName" class="text-danger"></span>
+                <label asp-for="Items.ItemArticle" class="control-label"></label>
+                <input asp-for="Items.ItemArticle" class="form-control" />
+                <span asp-validation-for="Items.ItemArticle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemArticle" class="control-label"></label>
-                <input asp-for="Item.ItemArticle" class="form-control" />
-                <span asp-validation-for="Item.ItemArticle" class="text-danger"></span>
+                <label asp-for="Items.CategoryID" class="control-label"></label>
+                <div class="row">
+                    <div class="col-10">
+                        @Html.DropDownListFor(m => m.SelectedCategory, Model.ItemGroup, "Выберите категорию", new
+                   { @class = "custom-select" })
+                    </div>
+                    <div class="col-2">
+                        <a href="/Groups/Create"><img width="34" src="https://img.icons8.com/color/48/000000/add.png" /></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="currentStorage" asp-for="Items.ItemStorageID" class="control-label text-success font-weight-bold">Текущий склад: @Html.DisplayTextFor(model => model.Items.ItemStorageID)</label>
+                <partial name="_BackFromArchive" />
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemStorageID" class="control-label"></label>
-                <input asp-for="Item.ItemStorageID" class="form-control" />
-                <span asp-validation-for="Item.ItemStorageID" class="text-danger"></span>
+                <label asp-for="Items.ItemSizes" class="control-label"></label>
+                <input asp-for="Items.ItemSizes" class="form-control" />
+                <span asp-validation-for="Items.ItemSizes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Item.DateTransferItem" class="control-label"></label>
-                <input asp-for="Item.DateTransferItem" class="form-control" />
-                <span asp-validation-for="Item.DateTransferItem" class="text-danger"></span>
+                <label asp-for="Items.ItemCount" class="control-label"></label>
+                <input asp-for="Items.ItemCount" min="1" maxlength="2" class="form-control col-3 text-center" />
             </div>
             <div class="form-group">
-                <label asp-for="Item.Creator" class="control-label"></label>
-                <input asp-for="Item.Creator" class="form-control" />
-                <span asp-validation-for="Item.Creator" class="text-danger"></span>
+                <label asp-for="Items.ItemCell" class="control-label"></label>
+                <input asp-for="Items.ItemCell" maxlength="5" class="form-control col-3 text-center" />
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemDescription" class="control-label"></label>
-                <input asp-for="Item.ItemDescription" class="form-control" />
-                <span asp-validation-for="Item.ItemDescription" class="text-danger"></span>
+                <label asp-for="Items.ItemDescription" class="control-label"></label>
+                <textarea asp-for="Items.ItemDescription" class="form-control" rows="3" id="comment" maxlength="160"></textarea>
+                <span asp-validation-for="Items.ItemDescription" class="text-danger"></span>
+            </div>
+
+            <div class="row pt-1 pb-4">
+                <span class="col-6"></span>
+                <div class="custom-control col-6 ">
+                    <div class="custom-checkbox float-right">
+                        <input asp-for="Items.ItemProtect" type="checkbox" class="custom-control-input" id="ProtectCheckbox">
+                        <label asp-for="Items.ItemProtect" class="custom-control-label" for="ProtectCheckbox" title="Отметить если позиция предназначена только для собственной формовки">Закрытая позиция</label>
+                    </div>
+                </div>
+            </div>
+
+            <div hidden>
+                <input asp-for="OldFileName" class="form-control" />
+            </div>
+            <div class="row">
+                <div class="col-6-sm plr15">
+                    <label>Текущее изображение:</label>
+                </div>
+                <div class="col-6-sm plr15">
+                    <a href="/img/photo/@Html.DisplayFor(model => model.Items.ItemPhoto)" data-fancybox>
+                        <img id="imagePreview" class="border pt-1" width="310" src="/img/icons/@Html.DisplayFor(model => model.Items.ItemPhoto)" />
+                    </a>
+                </div>
+            </div>
+            <div class="form-group row pt-2">
+                <div class="col-sm-12">
+                    <div class="custom-file">
+                        <label asp-for="Items.ItemPhoto" class="control-label custom-file-label">Загрузить новое изображение</label>
+                        <input class="custom-file-input" type="file" asp-for="NewImage" onchange="ShowPreview(event)" />
+                    </div>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Item.ItemSizes" class="control-label"></label>
-                <input asp-for="Item.ItemSizes" class="form-control" />
-                <span asp-validation-for="Item.ItemSizes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Item.ItemCount" class="control-label"></label>
-                <input asp-for="Item.ItemCount" class="form-control" />
-                <span asp-validation-for="Item.ItemCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Item.ItemCell" class="control-label"></label>
-                <input asp-for="Item.ItemCell" class="form-control" />
-                <span asp-validation-for="Item.ItemCell" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Item.ItemProtect" /> @Html.DisplayNameFor(model => model.Item.ItemProtect)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Item.CategoryID" class="control-label"></label>
-                <select asp-for="Item.CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
-                <span asp-validation-for="Item.CategoryID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Вернуться к списку</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/ImagePreview.js"></script>
 }
+
+

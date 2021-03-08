@@ -6,21 +6,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Warehouse.Areas.Identity.Data;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Warehouse.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Warehouse.Model;
 
 namespace Warehouse.Pages.Items
 {
+    [Authorize(Roles = "User, Admin, Driver")]
     public class EditModel : PageModel
     {
-        private readonly Warehouse.Areas.Identity.Data.ApplicationDbContext _context;
+        #region Variables 
+        private readonly ApplicationDbContext _context;
+        private IWebHostEnvironment _environment;
+        [BindProperty]
+        public List<SelectListItem> ItemGroup { get; set; }
+        [BindProperty]
+        public int SelectedCategory { get; set; }
+        [BindProperty]
+        public IFormFile NewImage { get; set; }
+        [BindProperty]
+        public string OldFileName { get; set; }
+        [BindProperty]
+        public Item Items { get; set; }
+        [BindProperty]
+        public string CurrentIteamStock { get; set; }
+        #endregion
 
-        public EditModel(Warehouse.Areas.Identity.Data.ApplicationDbContext context)
+        public EditModel(ApplicationDbContext context, IWebHostEnvironment environment)//IHostingEnvironment environment)
         {
+            _environment = environment;
             _context = context;
         }
-
-        [BindProperty]
-        public Item Item { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,36 +47,55 @@ namespace Warehouse.Pages.Items
             {
                 return NotFound();
             }
-
-            Item = await _context.Items
-                .Include(i => i.Category).FirstOrDefaultAsync(m => m.ItemID == id);
-
-            if (Item == null)
+            else
             {
-                return NotFound();
+                if (User.IsInRole("Driver"))
+                {
+                    return Redirect($"DriveEdit?id={id}");
+                }
+                else
+                {
+                    Items = await _context.Items.FirstOrDefaultAsync(m => m.ItemID == id);
+                    CreateSelectList();
+                    SelectedCategory = Items.CategoryID;
+
+                    if (Items == null)
+                    {
+                        return NotFound($"Unable to load user with ID.");
+                    }
+                    else
+                    {
+                        OldFileName = Items.ItemPhoto;
+                    }
+
+                    return Page();
+                }
             }
-           ViewData["CategoryID"] = new SelectList(_context.ItemsCategories, "CategoryID", "CategoryName");
-            return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Attach(Item).State = EntityState.Modified;
-
+            _context.Attach(Items).State = EntityState.Modified;
             try
             {
+                Items.CategoryID = SelectedCategory;
+                //Загрузка изображения и удаление старого
+                if (NewImage != null)
+                {
+                    Items.ItemPhoto = await SaveNewImage();
+                    if (OldFileName != ("noimage.jpg"))
+                        DeleteOldImage(OldFileName);
+                }
+                else
+                {
+                    Items.ItemPhoto = OldFileName;
+                }
                 await _context.SaveChangesAsync();
             }
+
             catch (DbUpdateConcurrencyException)
             {
-                if (!ItemExists(Item.ItemID))
+                if (!ItemExists(Items.ItemID))
                 {
                     return NotFound();
                 }
@@ -66,13 +104,45 @@ namespace Warehouse.Pages.Items
                     throw;
                 }
             }
-
             return RedirectToPage("./Index");
         }
 
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.ItemID == id);
+        }
+
+        private void DeleteOldImage(string _path)
+        {
+            string filePath_Icon = Path.Combine(_environment.WebRootPath, "img", "Icons", _path);
+            System.IO.File.Delete(filePath_Icon);
+            string filePath_Photo = Path.Combine(_environment.WebRootPath, "img", "Photo", _path);
+            System.IO.File.Delete(filePath_Photo);
+        }
+
+        private async Task<string> SaveNewImage()
+        {
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + NewImage.FileName;
+            var pathFile = Path.Combine(_environment.WebRootPath, "img");
+            var file = Path.Combine(pathFile, uniqueFileName);
+            //Save on server new file
+            using (var fileStream = new FileStream(file, FileMode.Create))
+            {
+                await NewImage.CopyToAsync(fileStream);
+            }
+            //Compress image
+            ImageResizer.Resizer(pathFile, uniqueFileName, file);
+            return uniqueFileName;
+        }
+
+        public void CreateSelectList()
+        {
+            ItemGroup = _context.ItemsCategories.Select(a =>
+                       new SelectListItem
+                       {
+                           Value = a.CategoryName.ToString(),
+                           Text = a.CategoryName
+                       }).ToList();
         }
     }
 }

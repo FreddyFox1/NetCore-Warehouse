@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualStudio.Web.CodeGeneration.Templating;
-using Warehouse.Areas.Identity.Data;
+using Warehouse.Model;
 
 namespace Warehouse.Pages.Items
 {
