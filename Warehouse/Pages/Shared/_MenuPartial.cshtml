@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<WarehouseUser> SignInManager
-@inject UserManager<WarehouseUser> UserManager
+@inject SignInManager<Warehouse.Model.WarehouseUser> SignInManager
+@inject UserManager<Warehouse.Model.WarehouseUser> UserManager
 
 
 @if (SignInManager.IsSignedIn(User))
@@ -13,12 +13,5 @@
     </li>
     <li class="nav-item">
         <a class="nav-link text-dark" asp-page="Items/Index">Список матриц</a>
-    </li>
-}
-
-@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-page="">Панель управления</a>
     </li>
 }

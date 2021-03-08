@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+
+@if (User.IsInRole("Admin"))
+{
+<div>
+    <script src="~/js/StorageEditor.js"></script>
+    <button disabled onclick="DeleteFromArchive()" type="button" id="backFromArchive" class="btn btn-primary">Убрать из архива</button>
+</div>
+}
+
+
