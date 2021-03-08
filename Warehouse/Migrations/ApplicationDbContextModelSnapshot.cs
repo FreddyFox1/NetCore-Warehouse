@@ -154,7 +154,7 @@ namespace Warehouse.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Warehouse.Areas.Identity.Data.Item", b =>
+            modelBuilder.Entity("Warehouse.Model.Item", b =>
                 {
                     b.Property<int>("ItemID")
                         .ValueGeneratedOnAdd()
@@ -206,7 +206,7 @@ namespace Warehouse.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("Warehouse.Areas.Identity.Data.ItemCategory", b =>
+            modelBuilder.Entity("Warehouse.Model.ItemCategory", b =>
                 {
                     b.Property<int>("CategoryID")
                         .ValueGeneratedOnAdd()
@@ -222,7 +222,7 @@ namespace Warehouse.Migrations
                     b.ToTable("ItemsCategories");
                 });
 
-            modelBuilder.Entity("Warehouse.Areas.Identity.Data.WarehouseUser", b =>
+            modelBuilder.Entity("Warehouse.Model.WarehouseUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -287,6 +287,33 @@ namespace Warehouse.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Warehouse.Services.TelegramService.TelegramEntity", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ChatID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("_sendUpdates")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("TelegramEntities");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -298,7 +325,7 @@ namespace Warehouse.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Warehouse.Areas.Identity.Data.WarehouseUser", null)
+                    b.HasOne("Warehouse.Model.WarehouseUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -307,7 +334,7 @@ namespace Warehouse.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Warehouse.Areas.Identity.Data.WarehouseUser", null)
+                    b.HasOne("Warehouse.Model.WarehouseUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -322,7 +349,7 @@ namespace Warehouse.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Warehouse.Areas.Identity.Data.WarehouseUser", null)
+                    b.HasOne("Warehouse.Model.WarehouseUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -331,16 +358,16 @@ namespace Warehouse.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Warehouse.Areas.Identity.Data.WarehouseUser", null)
+                    b.HasOne("Warehouse.Model.WarehouseUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Warehouse.Areas.Identity.Data.Item", b =>
+            modelBuilder.Entity("Warehouse.Model.Item", b =>
                 {
-                    b.HasOne("Warehouse.Areas.Identity.Data.ItemCategory", "Category")
+                    b.HasOne("Warehouse.Model.ItemCategory", "Category")
                         .WithMany("Item")
                         .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -349,7 +376,7 @@ namespace Warehouse.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Warehouse.Areas.Identity.Data.ItemCategory", b =>
+            modelBuilder.Entity("Warehouse.Model.ItemCategory", b =>
                 {
                     b.Navigation("Item");
                 });
