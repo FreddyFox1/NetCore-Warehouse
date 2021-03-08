@@ -340,3 +340,5 @@ ASALocalRun/
 healthchecksdb
 /Warehouse/TelegramKey.xml
 /Warehouse/TelegramService.json
+/Warehouse/wwwroot/img/Icons
+/Warehouse/wwwroot/img/Photo
