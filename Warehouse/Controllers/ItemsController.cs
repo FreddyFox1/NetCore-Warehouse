@@ -24,7 +24,11 @@ namespace Warehouse.Controllers
             _environment = environment;
         }
 
-        //Загрузка таблицы с данными
+        /// <summary>
+        /// Получение списка всех Item'ов 
+        /// </summary>
+        /// <param name="filter">Параметр фильтрует записи по категориям</param>
+        /// <returns>Возварщает запрашиваемые Item'ы</returns>
         [HttpGet]
         public async Task<IActionResult> GetAll(string filter)
         {
@@ -49,7 +53,11 @@ namespace Warehouse.Controllers
             }
         }
 
-        //Удаление записи из базы данных
+        /// <summary>
+        /// Удаление Item'мa из базы данных
+        /// </summary>
+        /// <param name="id">Уникальны идентификатор Item'a</param>
+        /// <returns>Возвращает Json ответ для всплывающего окна</returns>
         [Authorize]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
@@ -74,18 +82,23 @@ namespace Warehouse.Controllers
             }
         }
 
-        //Удаляет изображения удаленных позиций со склада
-        private void DeleteItemImages(string _path)
+        /// <summary>
+        /// Функция удаляет все фотографии Item'a с сервера
+        /// </summary>
+        /// <param name="_filename">Имя файла для удаления</param>
+        private void DeleteItemImages(string _filename)
         {
-            string filePath_Icon = Path.Combine(_environment.WebRootPath, "img", "Icons", _path);
+            string filePath_Icon = Path.Combine(_environment.WebRootPath, "img", "Icons", _filename);
             System.IO.File.Delete(filePath_Icon);
-            string filePath_Photo = Path.Combine(_environment.WebRootPath, "img", "Photo", _path);
+            string filePath_Photo = Path.Combine(_environment.WebRootPath, "img", "Photo", _filename);
             System.IO.File.Delete(filePath_Photo);
         }
 
-        ///<summary>
-        ///Защита данных от пользователя с ролью "Driver", скрывает часть данных для закрытых позиций.
-        ///</summary>
+        /// <summary>
+        /// Cкрывает часть данных для закрытых позиций.
+        /// </summary>
+        /// <param name="filter">Параметр фильтрует записи по категориям</param>
+        /// <returns>Возварщает запрашиваемые Item'ы</returns>
         private async Task<IActionResult> DataProtector(string filter)
         {
             var Data = _db.Items;

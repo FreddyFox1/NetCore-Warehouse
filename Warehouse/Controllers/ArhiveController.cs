@@ -23,6 +23,11 @@ namespace Warehouse.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Удаление статуса "Архив" у Item
+        /// </summary>
+        /// <param name="ID">уникальный индентификатор Item'a</param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> DeleteFromArchive(int ID)
         {

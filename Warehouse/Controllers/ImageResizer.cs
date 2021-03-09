@@ -5,8 +5,6 @@ namespace Warehouse.Controllers
 {
     /// <summary>
     /// Класс предназначен для обработки изображений загружаемых на сервер, 
-    /// а именно сжатие их и уменьшения разрешения для экономия места на 
-    /// сервер и быстрой загрузки их на мобильных устройствах
     /// </summary>
     public class ImageResizer
     {
@@ -19,6 +17,13 @@ namespace Warehouse.Controllers
         private const int l_quality = 75;
         #endregion
 
+        /// <summary>
+        /// Функция сжимает загружаемую картинку для экономия места на 
+        /// сервер и быстрой загрузки их на мобильных устройствах
+        /// </summary>
+        /// <param name="InputPath">Путь WebRootPath/img</param>
+        /// <param name="FileName">Имя файла из базы данных</param>
+        /// <param name="File">Полный путь до файла</param>
         public static void Resizer(string InputPath, string FileName, string File)
         {
             using (var photo = new MagickImage(File))

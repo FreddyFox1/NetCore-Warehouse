@@ -7,12 +7,10 @@ namespace Warehouse.Controllers
     public class RoleInitializer : Controller
     {
         /// <summary>
-        /// Создаем 4 типа пользователей
-        /// от админа до водителя
+        /// Создаем 4 роли пользователя
         /// </summary>
         /// <param name="roleManager">Сервис для работы с ролями пользователей приложения</param>
-        /// <returns></returns>
-        public static async Task InitializeAsync(RoleManager<IdentityRole> roleManager)
+        public static async void InitializeAsync(RoleManager<IdentityRole> roleManager)
         {
             if (await roleManager.FindByNameAsync("Admin") == null)
             {

@@ -20,8 +20,24 @@ namespace Warehouse.Controllers
             _userManager = userManager;
             _db = db;
         }
+
+        /// <summary>
+        /// Страница список ролей
+        /// </summary>
+        /// <returns>Возвращает представление для списка ролей</returns>
         public IActionResult Index() => View(_roleManager.Roles.ToList());
+
+        /// <summary>
+        /// Страница создания роли
+        /// </summary>
+        /// <returns>Возвращает представление для создания роли</returns>
         public IActionResult Create() => View();
+        
+        /// <summary>
+        /// Создание роли
+        /// </summary>
+        /// <param name="name">Имя новой роли</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create(string name)
         {
@@ -45,6 +61,11 @@ namespace Warehouse.Controllers
 
         public IActionResult UserList() => View(_userManager.Users.ToList());
 
+        /// <summary>
+        /// Страница редактирования ролей пользователя
+        /// </summary>
+        /// <param name="userId">Уникальный идентификатор пользователя</param>
+        /// <returns>Возвращает представление для редактирования</returns>
         public async Task<IActionResult> Edit(string userId)
         {
             // получаем пользователя
@@ -67,6 +88,14 @@ namespace Warehouse.Controllers
 
             return NotFound();
         }
+
+        /// <summary>
+        /// Страница редактирования ролей пользователя
+        /// </summary>
+        /// <param name="userId">Уникальный идентификатор пользователя</param>
+        /// <param name="roles">Список ролей</param>
+        /// <param name="userName">Имя изменяемого пользователя</param>
+        /// <returns>Возвращает страницу Admin/Index в случае успеха</returns>
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles, string userName)
         {
@@ -97,13 +126,18 @@ namespace Warehouse.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Удаление пользователя
+        /// </summary>
+        /// <param name="id">Уникальный идентификатор удаляемого пользователя</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
             WarehouseUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                if (_userManager.IsInRoleAsync(user, "Admin").Result == false)
+                if (!_userManager.IsInRoleAsync(user, "Admin").Result)
                 {
                     await _userManager.DeleteAsync(user);
                     return RedirectToPage("/Admin/Index");
