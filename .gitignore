@@ -344,3 +344,4 @@ healthchecksdb
 /Warehouse/wwwroot/img/Photo
 /Warehouse/Migrations/20210308142404_AddTelegramEntities.Designer.cs
 /Warehouse/Migrations/20210308142404_AddTelegramEntities.cs
+/Warehouse/BitrixService.json
