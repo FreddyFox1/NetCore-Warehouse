@@ -14,11 +14,11 @@ namespace Warehouse.Controllers
     [ApiController]
     [Authorize(Roles ="Admin")]
 
-    public class ArhiveController : Controller
+    public class ArchiveController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ArhiveController(ApplicationDbContext context)
+        public ArchiveController(ApplicationDbContext context)
         {
             _context = context;
         }

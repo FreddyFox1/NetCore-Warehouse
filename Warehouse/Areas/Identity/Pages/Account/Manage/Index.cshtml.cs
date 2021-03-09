@@ -47,7 +47,6 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber
             };
         }
-
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
