@@ -22,6 +22,10 @@ namespace Warehouse.Tests
         [InlineData("/items/Eventlog")]
         [InlineData("/admin/telegram")]
         [InlineData("/admin/roles")]
+        [InlineData("/api/archive")]
+        [InlineData("/api/items")]
+        [InlineData("/api/MoveItems")]
+
         public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
         {
             // Arrange
