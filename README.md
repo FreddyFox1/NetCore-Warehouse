@@ -22,6 +22,9 @@
     <a href="#Telegram">Страница «Telegram уведомления»</a>
   </li>
   <li>
+    <a href="#Bitrix24">Интеграция с Bitrix24»</a>
+  </li>
+  <li>
     <a href="#Roles">Права пользователей и уровни доступа</a>
   </li>
 </ul>
@@ -47,9 +50,9 @@
   <li><strike>Управление подписками на уведомления в Telegram</strike></li>
   </ul>
 
-<img src="https://user-images.githubusercontent.com/35505083/110385793-730f3100-8070-11eb-804c-a353bebfa83a.jpg" height="350">
-
 ## <a name="Telegram">Страница «Telegram уведомления</a>
+
+## <a name="Bitrix24">Интеграция с Bitrix24</a>
 
 ## <a name="Roles">Права пользователей и уровни доступа</a>
 <p><b>Admin:</b> Имеет доступ ко всем страницам и ресурсам приложения;</p>
