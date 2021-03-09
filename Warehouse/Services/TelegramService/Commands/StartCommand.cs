@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace Warehouse.Services.TelegramService.Commands
+namespace Warehouse.Services.TelegramService.TelegramAbstraction
 {
     public class StartCommand : Command
     {

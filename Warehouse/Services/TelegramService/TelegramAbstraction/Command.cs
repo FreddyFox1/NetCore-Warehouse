@@ -7,6 +7,9 @@ using Telegram.Bot.Types;
 
 namespace Warehouse.Services.TelegramService.TelegramAbstraction
 {
+    /// <summary>
+    /// Абстрактный класс для команд бота
+    /// </summary>
     public abstract class Command
     {
         public abstract string Name { get; }

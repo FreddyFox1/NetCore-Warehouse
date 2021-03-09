@@ -1,16 +1,14 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Configuration;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot.Args;
 using Microsoft.Extensions.Options;
+using Warehouse.Services.TelegramService.TelegramAbstraction;
 
 namespace Warehouse.Services.TelegramService
 {
@@ -18,9 +16,17 @@ namespace Warehouse.Services.TelegramService
     {
         private static ILogger<TelegramService> _logger;
         private Timer timer;
-        private TelegramBotClient telegramClient;
+        private static TelegramBotClient telegramClient;
         private readonly IOptions<TelegramKey> telegramKey;
-
+        private static List<Command> CommandsList;
+        public static IReadOnlyList<Command> Commands
+        {
+            get => CommandsList.AsReadOnly();
+        }
+        /// <summary>
+        /// </summary>
+        /// <param name="logger">Получаем логгер для логгирования</param>
+        /// <param name="_telegramKey">Token атвторизации для работы бота Telegram</param>
         public TelegramService(ILogger<TelegramService> logger, IOptions<TelegramKey> _telegramKey)
         {
             _logger = logger;
@@ -36,6 +42,8 @@ namespace Warehouse.Services.TelegramService
         /// <returns></returns>
         public Task StartAsync(CancellationToken cancellationToken)
         {
+            SetCommandList();
+            
             _logger.LogInformation("Telegram service started");
             telegramClient.OnUpdate += OnUpdateReceived;
             timer = new Timer(a =>
@@ -70,14 +78,37 @@ namespace Warehouse.Services.TelegramService
             throw new NotImplementedException();
         }
 
-        //Событие получение обновлений
+        /// <summary>
+        /// Событие получения обновлений
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static async void OnUpdateReceived(object sender, UpdateEventArgs e)
         {
             var message = e.Update.Message;
             if (message == null || message.Type != MessageType.Text) return;
-            _logger.LogWarning(message.Text);
+            else
+            {
+                foreach (var command in Commands)
+                {
+                    if (command.Contains(message.Text))
+                    {
+                        command.Execute(message, telegramClient);
+                        break;
+                    }
+                }
+                _logger.LogWarning(message.Text);
+            };
         }
 
+        /// <summary>
+        /// Создаем и заполняем список команд бота
+        /// </summary>
+        private void SetCommandList()
+        {
+            CommandsList = new List<Command>();
+            CommandsList.Add(new StartCommand());
+        }
     }
 
 }

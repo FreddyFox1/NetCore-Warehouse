@@ -3,7 +3,7 @@
 namespace Warehouse.Services.TelegramService.TelegramAbstraction
 {
     /// <summary>
-    /// 
+    /// Интерфейс для работы с Telegram API
     /// </summary>
     interface ITelegram
     {

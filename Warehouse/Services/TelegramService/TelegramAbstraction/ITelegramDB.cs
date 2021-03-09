@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Warehouse.Services.TelegramService.TelegramAbstraction
 {
+    /// <summary>
+    /// Интерфейс для работы с базой данных
+    /// </summary>
     interface ITelegramDB
     {
         void SaveUser();
