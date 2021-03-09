@@ -342,3 +342,5 @@ healthchecksdb
 /Warehouse/TelegramService.json
 /Warehouse/wwwroot/img/Icons
 /Warehouse/wwwroot/img/Photo
+/Warehouse/Migrations/20210308142404_AddTelegramEntities.Designer.cs
+/Warehouse/Migrations/20210308142404_AddTelegramEntities.cs
