@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,9 @@ namespace Warehouse.Tests
         [Fact]
         public void CreateTaskTest_return_string_with_article()
         {
-            BitrixService bitrixService = new BitrixService(GetBitrixKeysOptions());
+            BitrixService bitrixService;
+            bitrixService = new BitrixService(GetBitrixKeysOptions(),
+                                              GetLoggerBitrix());
             var expected = item.ItemArticle;
             var actual = bitrixService.CreateTask(item);
             Assert.Contains(expected, actual);
@@ -31,7 +34,8 @@ namespace Warehouse.Tests
         [Fact]
         public void PushTask_return_True()
         {
-            BitrixService bitrixService = new BitrixService(GetBitrixKeysOptions());
+            BitrixService bitrixService = new BitrixService(GetBitrixKeysOptions(),
+                                                            GetLoggerBitrix());
             var str = bitrixService.CreateTask(item);
             var actual = bitrixService.PushTask(str, item.ItemArticle);
 

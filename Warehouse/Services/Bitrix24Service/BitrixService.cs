@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ namespace Warehouse.Services.Bitrix24Service
     public class BitrixService : IBitrix
     {
         private readonly IOptions<BitrixKeys> BitrixKeys;
-        
-        public BitrixService(IOptions<BitrixKeys> _BitrixKeys)
+        private readonly ILogger<BitrixService> logger;
+
+        public BitrixService(IOptions<BitrixKeys> _BitrixKeys, ILogger<BitrixService> _logger)
         {
             BitrixKeys = _BitrixKeys;
+            logger = _logger;
         }
 
         private static RestClient RC = new RestClient();
@@ -29,14 +32,32 @@ namespace Warehouse.Services.Bitrix24Service
         /// <param name="item">Передаем новый добавленный объект</param>
         public string CreateTask(Item item)
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append("fields[TITLE]=" + item.ItemName);
-            builder.Append("&fields[RESPONSIBLE_ID]=546");
-            builder.Append("&fields[DESCRIPTION]=546\n");
-            builder.Append("2 строка\n");
-            builder.Append("3 строка\n");
-            builder.Append("Артикул: " + item.ItemArticle);
-            return builder.ToString();
+            try
+            {
+                StringBuilder builder = new StringBuilder();
+                builder.Append($"fields[TITLE]= Новая позиция/форма для вывода на сайты: {(!String.IsNullOrEmpty(item.ItemName) ? item.ItemName : "")}");
+                builder.Append("&fields[RESPONSIBLE_ID]=546");
+                builder.Append("&fields[DESCRIPTION]=");
+                builder.Append($"Артикул: {(!String.IsNullOrEmpty(item.ItemArticle) ? item.ItemArticle : "")}\n");
+                builder.Append($"Дата запуска в работу: {(!String.IsNullOrEmpty(item.DateTransferItem.ToString()) ? item.DateTransferItem : "")}\n");
+                builder.Append($"Открытая / закрытая позиция: \n");
+                builder.Append($"Название: {(!String.IsNullOrEmpty(item.ItemName) ? item.ItemName : "")}\n");
+                builder.Append($"Размер: {(!String.IsNullOrEmpty(item.ItemSizes) ? item.ItemSizes : "")}\n");
+                builder.Append("Где формуется: \n");
+                builder.Append("Ед.измерения для формы: \n");
+                builder.Append("Цена на форму(2, 3, 4 мм):\n");
+                builder.Append("Отлить бетонный экземпляр:\n");
+                builder.Append("Ед.измерения для бетона:\n");
+                builder.Append("Цена на бетонный изделие:\n");
+                builder.Append("Назначение:\n");
+                builder.Append("Раздел на сайте(категория):\n");
+                return builder.ToString();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return "";
+            }
         }
 
         /// <summary>

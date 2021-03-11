@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service;
@@ -70,6 +71,23 @@ namespace Warehouse.Tests
             var keys = factory.Services.GetService<IOptions<BitrixKeys>>();
             return keys;
         }
+        /// <summary>
+        /// Получаем логгер для BitrixService
+        /// </summary>
+        /// <returns>Возвращает логгер</returns>
+        protected ILogger<BitrixService> GetLoggerBitrix()
+        {
+            var logger = factory.Services.GetService<ILogger<BitrixService>>();
+            return logger;
+        }
+
+
+
+        //protected ILogger GetLogger<T>(T a) where T : class, new()
+        //{
+        //    var logger = factory.Services.GetService<ILogger<T>>();
+        //    return logger;
+        //}
 
     }
 }
