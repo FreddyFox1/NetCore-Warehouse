@@ -11,14 +11,18 @@ namespace Warehouse.Tests
 {
     public class ArchiveControllerTests : IntegrationTest
     {
+        /// <summary>
+        /// Тест для ArchiveController
+        /// </summary>
         [Fact]
-        public async void DeleteFromArchive_return_True_Or_False()
+        public async void DeleteFromArchive_return_True()
         {
             var context = GetContext();
             ItemCategory category = new ItemCategory()
             {
                 CategoryName = "TestName"
             };
+
             context.Add(category);
             context.SaveChanges();
 
@@ -33,10 +37,15 @@ namespace Warehouse.Tests
             context.Add(TestRecord);
             context.SaveChanges();
 
-            ArchiveController archiveController = new ArchiveController(GetContext());
+            var expected = TestRecord.ItemStorageID;
+
+            ArchiveController archiveController = new ArchiveController(context);
             await archiveController.DeleteFromArchive(TestRecord.ItemID);
 
-            Assert.Equal("Склад не указан", TestRecord.ItemStorageID);
+            var actual = context.Items.FirstOrDefault(a => 
+            a.ItemName == TestRecord.ItemName).ItemStorageID;
+           
+            Assert.DoesNotMatch(expected, actual);
         }
 
 
