@@ -4,7 +4,7 @@ namespace Warehouse.Services.Bitrix24Service.BitrixAbstractions
 {
     interface IBitrix
     {
-        void CreateTask(Item item);
-        void PushTask();
+        string CreateTask(Item item);
+        bool PushTask(string _fields, string Article);
     }
 }

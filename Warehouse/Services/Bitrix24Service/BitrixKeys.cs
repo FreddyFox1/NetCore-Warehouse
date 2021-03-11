@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 namespace Warehouse.Services.Bitrix24Service
 {
     /// <summary>
-    /// Ключ авторизации для работы с API Bitrix24
+    /// Ключ авторизации и адрес портала Bitrix24 для работы с API 
     /// </summary>
-    public class BitrixKey
+    public class BitrixKeys
     {
         public string AuthKey { get; set; }
+        public string ReqUrl { get; set; }
     }
 }
