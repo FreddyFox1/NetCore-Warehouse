@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Warehouse.Model;
+using Warehouse.Services.Bitrix24Service;
 using Warehouse.Services.TelegramService;
 
 namespace Warehouse
@@ -22,7 +23,8 @@ namespace Warehouse
             //Добавляем JSON файлы с настройками приложения
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile("TelegramService.json");
+                .AddJsonFile("TelegramService.json")
+                .AddJsonFile("BitrixService.json");
             Configuration = builder.Build();
 
         }
@@ -31,6 +33,8 @@ namespace Warehouse
         {
             //Забираем ключ из JSON файла для работы с API Telegram
             services.Configure<TelegramKey>(Configuration.GetSection("Telegram"));
+            //Забираем ключ из JSON файла для работы с API Bitrix
+            services.Configure<BitrixKeys>(Configuration.GetSection("Bitrix"));
 
             //Добавляем контекст для базы данных, и MS SQL в качестве СУБД
             services.AddDbContext<ApplicationDbContext>(options =>
