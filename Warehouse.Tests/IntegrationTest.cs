@@ -40,10 +40,17 @@ namespace Warehouse.Tests
                         });
                     });
                 });
-
+            TestClient = CreateAuthorizeClient();
             factory = appFactory;
-            
-            TestClient = factory.WithWebHostBuilder(builder =>
+        }
+
+        /// <summary>
+        /// Создаем клиента с авторизацией для тестов закрытых страниц
+        /// </summary>
+        /// <returns>Возвращает авторизированного клиента</returns>
+        protected HttpClient CreateAuthorizeClient()
+        {
+            var TestClient = factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureTestServices(services =>
                 {
@@ -55,9 +62,9 @@ namespace Warehouse.Tests
                 AllowAutoRedirect = false,
             });
 
-            TestClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Test");
+            TestClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
 
+            return TestClient;
         }
 
         /// <summary>

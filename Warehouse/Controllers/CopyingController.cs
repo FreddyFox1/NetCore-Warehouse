@@ -31,7 +31,7 @@ namespace Warehouse.Controllers
         /// Создание копии копии записи Item'a
         /// </summary>
         /// <param name="id">ID копируемого Item'a </param>
-        /// <returns></returns>
+        /// <returns>Возвращает json сообщение для всплывающего уведомления</returns>
         [HttpGet]
         public async Task<IActionResult> CreateCopy(int? id)
         {

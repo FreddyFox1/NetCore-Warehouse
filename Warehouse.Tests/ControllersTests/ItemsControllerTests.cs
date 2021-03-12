@@ -50,11 +50,10 @@ namespace Warehouse.Tests.ControllersTests
         }
 
         [Fact]
-        public async void GetAll_return_json()
+        public async void GetItems_return_json()
         {
             // Act
             var response = await TestClient.GetAsync("api/Items");
-            response.EnsureSuccessStatusCode();
 
             // Assert
             Assert.Equal("application/json; charset=utf-8",
