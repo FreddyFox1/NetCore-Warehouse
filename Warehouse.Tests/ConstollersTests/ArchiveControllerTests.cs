@@ -7,7 +7,7 @@ using Warehouse.Controllers;
 using Warehouse.Model;
 using Xunit;
 
-namespace Warehouse.Tests
+namespace Warehouse.Tests.ControllersTests
 {
     public class ArchiveControllerTests : IntegrationTest
     {

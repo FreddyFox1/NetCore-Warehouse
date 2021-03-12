@@ -1,14 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Warehouse.Model;
+﻿using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service;
 using Xunit;
 
-namespace Warehouse.Tests
+namespace Warehouse.Tests.ServicesTests
 {
     public class BitrixServiceTests : IntegrationTest
     {
@@ -35,7 +29,7 @@ namespace Warehouse.Tests
         public void PushTask_return_True()
         {
             BitrixService bitrixService = new BitrixService(GetBitrixKeysOptions(),
-                                                            GetLoggerBitrix());
+                                               GetLoggerBitrix());
             var str = bitrixService.CreateTask(item);
             var actual = bitrixService.PushTask(str, item.ItemArticle);
 

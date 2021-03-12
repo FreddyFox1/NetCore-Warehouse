@@ -3,8 +3,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,7 @@ namespace Warehouse.Tests
     {
         protected readonly HttpClient TestClient;
         protected readonly WebApplicationFactory<Startup> factory;
+
         /// <summary>
         /// Создаем тестовый сервер и устанавливаем сервисы
         /// </summary>
@@ -39,7 +42,22 @@ namespace Warehouse.Tests
                 });
 
             factory = appFactory;
-            TestClient = appFactory.CreateClient();
+            
+            TestClient = factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddAuthentication("Test")
+                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
+                });
+            }).CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
+
+            TestClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Test");
+
         }
 
         /// <summary>
@@ -71,6 +89,7 @@ namespace Warehouse.Tests
             var keys = factory.Services.GetService<IOptions<BitrixKeys>>();
             return keys;
         }
+
         /// <summary>
         /// Получаем логгер для BitrixService
         /// </summary>
@@ -80,14 +99,6 @@ namespace Warehouse.Tests
             var logger = factory.Services.GetService<ILogger<BitrixService>>();
             return logger;
         }
-
-
-
-        //protected ILogger GetLogger<T>(T a) where T : class, new()
-        //{
-        //    var logger = factory.Services.GetService<ILogger<T>>();
-        //    return logger;
-        //}
 
     }
 }

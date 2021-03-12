@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Warehouse.Tests
+namespace Warehouse.Tests.ControllersTests
 {
     public class RouteTests
     : IClassFixture<WebApplicationFactory<Startup>>
@@ -39,5 +39,12 @@ namespace Warehouse.Tests
             Assert.Equal("text/html; charset=utf-8",
                 response.Content.Headers.ContentType.ToString());
         }
+
+        public enum Stocks
+        {
+           ID=1
+        };
+
+        int a = (int)Stocks.ID;
     }
 }
