@@ -9,27 +9,33 @@ using Microsoft.Extensions.Logging;
 using Telegram.Bot.Args;
 using Microsoft.Extensions.Options;
 using Warehouse.Services.TelegramService.TelegramAbstraction;
+using Warehouse.Services.TelegramService.Commands;
+using Warehouse.Model;
+using Microsoft.AspNetCore.Identity;
 
 namespace Warehouse.Services.TelegramService
 {
     internal class TelegramService : IHostedService, ITelegram
     {
-        private static ILogger<TelegramService> _logger;
+        private static ILogger<TelegramService> logger;
         private Timer timer;
         private static TelegramBotClient telegramClient;
         private readonly IOptions<TelegramKey> telegramKey;
         private static List<Command> CommandsList;
+
         public static IReadOnlyList<Command> Commands
         {
             get => CommandsList.AsReadOnly();
         }
+
         /// <summary>
         /// </summary>
-        /// <param name="logger">Получаем логгер для логгирования</param>
+        /// <param name="_logger">Получаем логгер для логгирования</param>
         /// <param name="_telegramKey">Token атвторизации для работы бота Telegram</param>
-        public TelegramService(ILogger<TelegramService> logger, IOptions<TelegramKey> _telegramKey)
+        public TelegramService(ILogger<TelegramService> _logger,
+                               IOptions<TelegramKey> _telegramKey)
         {
-            _logger = logger;
+            logger = _logger;
             telegramKey = _telegramKey;
             telegramClient = new TelegramBotClient(telegramKey.Value.AuthKey);
         }
@@ -43,8 +49,8 @@ namespace Warehouse.Services.TelegramService
         public Task StartAsync(CancellationToken cancellationToken)
         {
             SetCommandList();
-            
-            _logger.LogInformation("Telegram service started");
+
+            logger.LogInformation("Telegram service started");
             telegramClient.OnUpdate += OnUpdateReceived;
             timer = new Timer(a =>
             {
@@ -58,7 +64,7 @@ namespace Warehouse.Services.TelegramService
         }
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Telegram service was stoped");
+            logger.LogInformation("Telegram service was stoped");
             return Task.CompletedTask;
         }
 
@@ -97,7 +103,7 @@ namespace Warehouse.Services.TelegramService
                         break;
                     }
                 }
-                _logger.LogWarning(message.Text);
+                logger.LogInformation(message.Text);
             };
         }
 
@@ -108,7 +114,9 @@ namespace Warehouse.Services.TelegramService
         {
             CommandsList = new List<Command>();
             CommandsList.Add(new StartCommand());
+            CommandsList.Add(new SearchCommand());
         }
+
     }
 
 }
