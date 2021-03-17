@@ -112,6 +112,7 @@ namespace Warehouse.Controllers
                 }
             }
         }
+
         /// <summary>
         /// Cкрывает часть данных для закрытых позиций.
         /// </summary>
