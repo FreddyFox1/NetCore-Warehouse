@@ -2,17 +2,17 @@
 var filter = "All";
 
 $(document).ready(function () {
-    //loadCategoryFilter();
+    loadCategoryFilter();
     loadDataTable();
 });
 
-//function loadCategoryFilter() {
-//    if ((result = localStorage.getItem("category-filter")) != null) {
-//        $('#inputGroupSelect04 option[value=' + result + ']').prop('selected', 'selected');
-//        filter = result;
-//    }
-//    else filter = "All";
-//}
+function loadCategoryFilter() {
+    if ((result = localStorage.getItem("category-filter")) != null) {
+        $('#inputGroupSelect04 option[value=' + "\"" + result.innerHTML + "\"" + ']').prop('selected', 'selected');
+        filter = result;
+    }
+    else filter = "All";
+}
 
 function loadDataTable() {
     dataTable = $('#DT_Items').DataTable({

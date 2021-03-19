@@ -345,3 +345,4 @@ healthchecksdb
 /Warehouse/Migrations/20210308142404_AddTelegramEntities.Designer.cs
 /Warehouse/Migrations/20210308142404_AddTelegramEntities.cs
 /Warehouse/BitrixService.json
+/Warehouse/wwwroot/icons/edit_60px.png
