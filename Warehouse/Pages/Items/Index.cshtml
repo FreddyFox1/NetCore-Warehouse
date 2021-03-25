@@ -60,7 +60,18 @@
 
 @section Scripts{
 
-<script src="~/js/ItemsList.js"></script>
+    @if (User.IsInRole("Driver"))
+    {
+        <script src="~/js/Items/DriverItemsList.js"></script>
+    }
+    else if (User.IsInRole("Watcher"))
+    {
+        <script src="~/js/Items/WatcherItemsList.js"></script>
+    }
+    else
+    {
+        <script src="~/js/Items/ItemsList.js"></script>
+    }
 
     <script type="text/javascript">
         $(document).ready(function () {
