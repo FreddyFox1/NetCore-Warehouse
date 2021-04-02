@@ -1,0 +1,36 @@
+﻿@page
+@model Warehouse.Pages.Items.Groups.IndexModel
+
+@{
+    ViewData["Title"] = "Список категорий";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Список категорий</h1>
+
+<p>
+    <a asp-page="Create">Добавить категорию</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemCategory[0].CategoryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ItemCategory) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.CategoryID">Edit</a> |
+                <a asp-page="./Delete" asp-route-id="@item.CategoryID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
