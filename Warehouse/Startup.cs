@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service;
+using Warehouse.Services.Bitrix24Service.BitrixAbstractions;
 using Warehouse.Services.TelegramService;
 
 namespace Warehouse
@@ -69,6 +70,7 @@ namespace Warehouse
 
             //Добавлем сервис для работы Telegram бота в фоновом режиме 
             services.AddHostedService<TelegramService>();
+            services.AddSingleton<IBitrix, BitrixService>();
 
         }
 

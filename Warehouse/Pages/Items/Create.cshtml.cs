@@ -12,15 +12,20 @@ using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Warehouse.Model;
+using Warehouse.Services.Bitrix24Service;
+using Warehouse.Services.Bitrix24Service.BitrixAbstractions;
+
 
 namespace Warehouse.Pages.Items
 {
     [Authorize(Policy = "DriverArea")]
     public class CreateModel : PageModel
     {
+        private readonly IBitrix _bitrix;
         private readonly UserManager<WarehouseUser> _userManager;
         private IWebHostEnvironment _environment;
         private readonly ApplicationDbContext _context;
+
 
         #region VariableForItems
         [BindProperty]
@@ -37,13 +42,18 @@ namespace Warehouse.Pages.Items
         public string Creator { get; set; }
         #endregion
 
-        public CreateModel(ApplicationDbContext context, UserManager<WarehouseUser> userManager, IWebHostEnvironment environment)
+        public CreateModel(ApplicationDbContext context, UserManager<WarehouseUser> userManager, IWebHostEnvironment environment, IBitrix bitrix)
         {
             _userManager = userManager;
             _context = context;
+            _bitrix = bitrix;
             _environment = environment;
         }
 
+        /// <summary>
+        /// Страница создания новой записи
+        /// </summary>
+        /// <returns>Возвращает страницу создания записи в БД</returns>
         public async Task<IActionResult> OnGetAsync()
         {
             CreateSelectList();
@@ -55,17 +65,26 @@ namespace Warehouse.Pages.Items
             else Creator = User.Identity.Name;
             return Page();
         }
-
+        
+        /// <summary>
+        /// Получаем список категорий из БД
+        /// </summary>
         public void CreateSelectList()
         {
-            ItemGroup =  _context.ItemsCategories.Select(a =>
-                       new SelectListItem
-                       {
-                           Value = a.CategoryID.ToString(),
-                           Text = a.CategoryName
-                       }).ToList();
+            ItemGroup = _context.ItemsCategories.Select(a =>
+                      new SelectListItem
+                      {
+                          Value = a.CategoryID.ToString(),
+                          Text = a.CategoryName
+                      }).ToList();
         }
 
+        /// <summary>
+        /// Добавление новой позиции в БД
+        /// </summary>
+        /// <returns>
+        ///     В случаем успешного добавление возвращает :Items/Index:"
+        /// </returns>
         public async Task<IActionResult> OnPostAsync()
         {
             if (!String.IsNullOrEmpty(StorageValue))
@@ -99,6 +118,7 @@ namespace Warehouse.Pages.Items
 
                     _context.Items.Add(Items);
                     await _context.SaveChangesAsync();
+                    //_bitrix.SendNotyfication(, $"Добавлена новая мастер модель: {Items.ItemName}");
                     return RedirectToPage("./Index");
                 }
                 else
@@ -114,7 +134,12 @@ namespace Warehouse.Pages.Items
                 return Page();
             }
         }
-
+        
+        /// <summary>
+        /// Проврека на уникальность артикула
+        /// </summary>
+        /// <param name="Article"></param>
+        /// <returns>Если артикул уникален возвращает true</returns>
         public bool ValidArticle(string Article)
         {
             var temp = _context.Items.FirstOrDefault(a => a.ItemArticle == Article);

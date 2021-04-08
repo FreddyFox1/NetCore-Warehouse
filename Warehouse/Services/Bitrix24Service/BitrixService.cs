@@ -18,18 +18,14 @@ namespace Warehouse.Services.Bitrix24Service
     {
         private readonly IOptions<BitrixKeys> BitrixKeys;
         private readonly ILogger<BitrixService> logger;
+        private static RestClient RC = new RestClient();
 
         public BitrixService(IOptions<BitrixKeys> _BitrixKeys, ILogger<BitrixService> _logger)
         {
             BitrixKeys = _BitrixKeys;
             logger = _logger;
         }
-
-        private static RestClient RC = new RestClient();
-        /// <summary>
-        /// Создаем задачу на основе добавленного Item'a
-        /// </summary>
-        /// <param name="item">Передаем новый добавленный объект</param>
+          
         public string CreateTask(Item item)
         {
             try
@@ -50,7 +46,7 @@ namespace Warehouse.Services.Bitrix24Service
                 builder.Append("Ед.измерения для бетона:\n");
                 builder.Append("Цена на бетонный изделие:\n");
                 builder.Append("Назначение:\n");
-                builder.Append("Раздел на сайте(категория):\n");
+                builder.Append($"Раздел на сайте(категория):{(!String.IsNullOrEmpty(item.Category.CategoryName) ? item.Category.CategoryName : "")}\n");
                 return builder.ToString();
             }
             catch (Exception ex)
@@ -60,9 +56,6 @@ namespace Warehouse.Services.Bitrix24Service
             }
         }
 
-        /// <summary>
-        /// Отправляем запрос для создание задачи на сервер Bitrix24
-        /// </summary>
         public bool PushTask(string _fields, string Article)
         {
             var Request = new RestRequest(BitrixKeys.Value.ReqUrl
@@ -73,6 +66,17 @@ namespace Warehouse.Services.Bitrix24Service
             if (Response.Content.Contains(Article))
                 return true;
             else return false;
+        }
+
+        public async void SendNotyfication(List<string> BitrixUsers, string message)
+        {
+            foreach (var user in BitrixUsers)
+            {
+                var Request = new RestRequest(BitrixKeys.Value.ReqUrl
+                + BitrixKeys.Value.AuthKey
+                + $"/im.notify.json?message={message}&to{user}");
+                await RC.ExecutePostAsync(Request);
+            }
         }
     }
 }
