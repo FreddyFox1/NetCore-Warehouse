@@ -16,7 +16,7 @@ namespace Warehouse.Controllers
     public class ItemsController : Controller
     {
         private readonly ApplicationDbContext _db;
-        private IWebHostEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
         public ItemsController(ApplicationDbContext db, IWebHostEnvironment environment)
         {

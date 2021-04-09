@@ -10,8 +10,8 @@ namespace Warehouse.Services.TelegramService
 {
     public class Authentication : ITelegramAuthentication
     {
-        private static UserManager<WarehouseUser> userManager;
-        private static SignInManager<WarehouseUser> signInManager;
+        private readonly static UserManager<WarehouseUser> userManager;
+        private readonly static SignInManager<WarehouseUser> signInManager;
 
         /// <summary>
         /// Проверка логина пользователя

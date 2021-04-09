@@ -14,11 +14,11 @@ namespace Warehouse.Services.Bitrix24Service
     /// <summary>
     /// Сервис для работы с API Bitrix24
     /// </summary>
-    public class BitrixService : IBitrix
+    public class BitrixService : IBitrix, IBitrixUser
     {
         private readonly IOptions<BitrixKeys> BitrixKeys;
         private readonly ILogger<BitrixService> logger;
-        private static RestClient RC = new RestClient();
+        private readonly static RestClient RC = new RestClient();
 
         public BitrixService(IOptions<BitrixKeys> _BitrixKeys, ILogger<BitrixService> _logger)
         {
@@ -77,6 +77,21 @@ namespace Warehouse.Services.Bitrix24Service
                 + $"/im.notify.json?message={message}&to{user}");
                 await RC.ExecutePostAsync(Request);
             }
+        }
+
+        public List<string> GetUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool isUserCreated()
+        {
+            return true;
+        }
+
+        public void SaveUser()
+        {
+            throw new NotImplementedException();
         }
     }
 }

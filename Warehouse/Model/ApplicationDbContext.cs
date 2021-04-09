@@ -20,6 +20,7 @@ namespace Warehouse.Model
         public DbSet<ItemLog> ItemLogs { get; set; }
         public DbSet<ItemCategory> ItemsCategories { get; set; }
         public DbSet<TelegramEntity> TelegramEntities { get; set; }
-        
+        public DbSet<BitrixUser> BitrixUsers { get; set; }
+
     }
 }

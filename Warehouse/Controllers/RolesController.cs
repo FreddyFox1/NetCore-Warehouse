@@ -11,9 +11,9 @@ namespace Warehouse.Controllers
 {
     public class RolesController : Controller
     {
-        RoleManager<IdentityRole> _roleManager;
-        UserManager<WarehouseUser> _userManager;
-        ApplicationDbContext _db;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<WarehouseUser> _userManager;
+        private readonly ApplicationDbContext _db;
         public RolesController(RoleManager<IdentityRole> roleManager, UserManager<WarehouseUser> userManager, ApplicationDbContext db)
         {
             _roleManager = roleManager;
