@@ -108,11 +108,11 @@ namespace Warehouse
                         name: "default",
                         pattern: "admin/roles",
                         defaults: new { controller = "Roles", action = "Index" });
+                
                 endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "admin/roles/Edit/{id?}",
                         defaults: new { controller = "Roles", action = "Edit" });
-
 
                 endpoints.MapControllerRoute(
                         name: "default",
