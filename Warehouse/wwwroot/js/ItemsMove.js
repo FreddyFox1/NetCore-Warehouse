@@ -91,7 +91,7 @@ function LoadDataTable() {
 }
 
 function SetStorage(item) { if (item != null) Storage = item.value; }
-function GetExtensionInfo() { return stringUrl = '&StorageName=' + Storage + '&UserName=' + document.getElementById('UserName').innerHTML; }
+function GetExtensionInfo() { return stringUrl = '&StorageName=' + Storage + '&UserName=' + document.getElementById('manage').innerText; }
 
 function ChangeItemPos(url) {
     swal({

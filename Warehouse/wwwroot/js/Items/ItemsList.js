@@ -184,12 +184,17 @@ function format(d) {
     else
         value = "Нет примечаний";
 
-    return `<table width="100%" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;>
+    return `<table width="100%" cellpadding="5" cellspacing="0" border="0">
                 <tr class="bg-white">
                      <div class="d-flex">
-                         <p class="text-left WordBreaker"><b>Примечание: </b> ${value}</p>
-                         <a class="btn-sm btn btn-info d-flex ml-auto align-self-center text-center text-white mr-2" onclick=Copy('api/Items/CreateCopy?id='+${d.itemID})>Копировать</a>
-                    </div>
+                        <div class="d-flex flex-row">
+                            <p class="text-left WordBreaker"><b>Примечание: </b> ${value}</p>
+                        </div>
+                     <div class="d-flex">
+                         <a class="btn-sm flex-row-reverse btn btn-info mr-2 text-center text-white" onclick=CreateTask('api/Bitrix/CreateTask?id'+${d.itemID})>Создать задачу</a>                    
+                         <a class="btn-sm btn btn-info mr-2 text-center text-white" onclick=Copy('api/Items/CreateCopy?id='+${d.itemID})>Копировать</a>
+                     </div>
+                   </div>
                 </tr>
             </table>`;
 }
@@ -230,4 +235,29 @@ function Copy(url) {
             });
         }
     });
+}
+
+function CreateTask(url) {
+    swal({
+        title: "Создать задачу в Bitrix24?",
+        icon: "success",
+        buttons: true,
+        dangerMode: true
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        dataTable.ajax.reload();
+                    }
+                    else
+                        toastr.error(data.message);
+                }
+            });
+        }
+    });
+
 }

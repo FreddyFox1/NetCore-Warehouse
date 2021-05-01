@@ -70,7 +70,9 @@ namespace Warehouse
 
             //Добавлем сервис для работы Telegram бота в фоновом режиме 
             services.AddHostedService<TelegramService>();
+            services.AddSingleton<IBitrixUser, BitrixService>();
             services.AddSingleton<IBitrix, BitrixService>();
+            
 
         }
 
