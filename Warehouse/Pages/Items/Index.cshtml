@@ -4,53 +4,50 @@
 @{
     ViewData["Title"] = "Список матриц";
 }
-<div class="container">
-    <div class="row justify-content-center align-items-center">
-        <div class="col-9">
-            <h1 class="text-info">Список матриц</h1>
-        </div>
-        <div class="col-3"></div>
-    </div>
-    <div class="row pt-2 pb-1">
-        <div class="col-6">
-            <div class="input-group">
-                <select onchange="ShowCategory(this.value)" name="SelecterCategory" class="custom-select" id="inputGroupSelect04" asp-items="Model.GroupsList">
-                    <option value="All">Выберите категорию</option>
-                </select>
-                <div class="input-group-append pr-1">
-                    <button id="ResetCategory" class="btn btn-outline-secondary" type="button">Сбросить</button>
-                </div>
+
+<div class="row justify-content-center align-items-center">
+    <h1 class="text-info text-center">Список матриц</h1>
+</div>
+<div class="row pt-2 pb-1">
+    <div class="col-6">
+        <div class="input-group">
+            <select onchange="ShowCategory(this.value)" name="SelecterCategory" class="custom-select" id="inputGroupSelect04" asp-items="Model.GroupsList">
+                <option value="All">Выберите категорию</option>
+            </select>
+            <div class="input-group-append pr-1">
+                <button id="ResetCategory" class="btn btn-outline-secondary" type="button">Сбросить</button>
             </div>
         </div>
-        @if (!User.IsInRole("Watcher"))
-        {
-            <div class="col-3"></div>
-            <div class="col-3"><a asp-page="Create" class="btn btn-info form-control text-white">Добавить матрицу</a></div>
-        }
     </div>
-
-    <hr class="pt-2">
+    @if (!User.IsInRole("Watcher"))
+    {
+        <div class="col-3"></div>
+        <div class="col-3"><a asp-page="Create" class="btn btn-info form-control text-white">Добавить матрицу</a></div>
+    }
+</div>
+<hr class="pt-2">
+<div class="container row p-0 m-0">
     <table id="DT_Items" class="display text-center table-striped table-bordered" width="100%">
         <thead>
             <tr>
                 <th></th>
-                <th>Фото</th>
-                <th>Название</th>
-                <th>Артикул</th>
-                <th>Размер</th>
-                <th>Склад</th>
-                <th>Шт</th>
-                <th><img src="~/icons/IconCell-black.png" height="20"></th>
+                <th class="align-middle">Фото</th>
+                <th class="align-middle">Название</th>
+                <th class="align-middle">Артикул</th>
+                <th class="align-middle">Размер</th>
+                <th class="align-middle">Склад</th>
+                <th class="align-middle">Шт</th>
+                <th class="align-middle"><img src="~/icons/IconCell-black.png" height="20"></th>
 
                 @if (!User.IsInRole("Watcher"))
                 {
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
                 }
                 else
                 {
-                    <th></th>
+                    <th class="align-middle"></th>
                 }
 
             </tr>

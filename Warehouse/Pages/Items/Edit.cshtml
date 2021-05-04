@@ -1,5 +1,6 @@
 ﻿@page
 @model Warehouse.Pages.Items.EditModel
+@inject UserManager<WarehouseUser> UserManager
 @{
     ViewData["Title"] = "Редактирование";
 }
@@ -36,7 +37,9 @@
             </div>
 
             <div class="form-group">
-                <label id="currentStorage" asp-for="Items.ItemStorageID" class="control-label text-success font-weight-bold">Текущий склад: @Html.DisplayTextFor(model => model.Items.ItemStorageID)</label>
+                <label id="currentStorage" class="control-label text-success font-weight-bold">
+                    Текущий склад: @Html.DisplayFor(model => model.Items.ItemStorageID)
+                </label>
                 <partial name="_BackFromArchive" />
             </div>
             <div class="form-group">

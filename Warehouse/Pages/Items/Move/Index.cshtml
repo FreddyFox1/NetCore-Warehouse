@@ -2,18 +2,19 @@
 @{
     ViewData["Title"] = "Перемещение матриц";
 }
-<h1 class="pb-3">Перемещение матриц</h1>
-<div class="container ">
+<h1 class="pb-1 text-center text-muted">Перемещение матриц</h1>
+<hr />
+<div class="container p-0 m-0">
     <table class="table table-reflow text-center table-striped table-bordered" id="TableItems">
         <thead class="thead-dark">
             <tr>
-                <th>Фото</th>
-                <th>Название</th>
-                <th>Артикул</th>
-                <th>Статус</th>
-                <th>Размеры</th>
-                <th><img src="~/icons/IconCell.png" height="20"></th>
-                <th>Склады</th>
+                <th class="align-middle">Фото</th>
+                <th class="align-middle">Название</th>
+                <th class="align-middle">Артикул</th>
+                <th class="align-middle">Статус</th>
+                <th class="align-middle">Размеры</th>
+                <th class="align-middle"><img src="~/icons/IconCell.png" height="20"></th>
+                <th class="align-middle">Склады</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,8 +23,8 @@
 
 @section Scripts{
     <script src="/js/ItemsMove.js"></script>
-    
-<script type="text/javascript">
+
+    <script type="text/javascript">
         $(document).ready(function () {
             $(".myfancybox").fancybox({});
         });

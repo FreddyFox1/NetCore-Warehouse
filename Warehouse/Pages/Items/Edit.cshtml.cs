@@ -15,7 +15,7 @@ using Warehouse.Model;
 
 namespace Warehouse.Pages.Items
 {
-    [Authorize(Roles = "User, Admin, Driver")]
+    [Authorize(Policy = "DriverArea")]
     public class EditModel : PageModel
     {
         #region Variables 
