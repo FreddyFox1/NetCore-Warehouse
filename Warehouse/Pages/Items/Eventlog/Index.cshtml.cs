@@ -17,7 +17,7 @@ namespace Warehouse.Pages.Items.Eventlog
         private readonly ApplicationDbContext _context;
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ApplicationDbContext context,ILogger<IndexModel> logger )
+        public IndexModel(ApplicationDbContext context, ILogger<IndexModel> logger)
         {
             _logger = logger;
             _context = context;
