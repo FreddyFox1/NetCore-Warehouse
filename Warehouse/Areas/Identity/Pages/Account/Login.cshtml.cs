@@ -19,7 +19,7 @@ namespace Warehouse.Areas.Identity.Pages.Account
         private readonly SignInManager<WarehouseUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<WarehouseUser> signInManager, 
+        public LoginModel(SignInManager<WarehouseUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<WarehouseUser> userManager)
         {
@@ -40,12 +40,12 @@ namespace Warehouse.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Введите логин")]
             [EmailAddress]
-            [Display(Name ="Email")]
+            [Display(Name = "Email")]
             public string Email { get; set; }
             [Display(Name = "Пароль")]
-            [Required]
+            [Required(ErrorMessage = "Введите пароль")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
@@ -75,7 +75,7 @@ namespace Warehouse.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
