@@ -10,7 +10,7 @@ using Warehouse.Model;
 
 namespace Warehouse.Pages.Items.Groups
 {
-    [Authorize(Roles = "User")]
+    [Authorize(Policy = "UserArea")]
     public class IndexModel : PageModel
     {
         private readonly Warehouse.Model.ApplicationDbContext _context;

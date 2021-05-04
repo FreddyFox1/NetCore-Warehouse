@@ -8,7 +8,7 @@ using Warehouse.Model;
 
 namespace Warehouse.Pages.Items.Groups
 {
-    [Authorize(Roles = "User")]
+    [Authorize(Policy = "UserArea")]
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;
