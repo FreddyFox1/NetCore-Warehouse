@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<Warehouse.Model.WarehouseUser> SignInManager
-@inject UserManager<Warehouse.Model.WarehouseUser> UserManager
+@inject SignInManager<WarehouseUser> SignInManager
+@inject UserManager<WarehouseUser> UserManager
 
 
 @if (SignInManager.IsSignedIn(User))

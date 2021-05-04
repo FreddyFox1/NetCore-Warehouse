@@ -4,14 +4,16 @@
     ViewData["Title"] = "Список пользователей";
 }
 <div class="container">
-    <div class="row row-cols-1">
+    <div class="row row-cols-1 align-self-center">
         <div class="col-9">
-            <h1>Список пользователей</h1>
+            <h2>Список пользователей</h2>
+
         </div>
         <div class="col-3 mr-0 ml-0 pr-0">
             <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary form-control text-white">Добавить</a>
         </div>
     </div>
+    <br>
     <div class="row-cols-1">
         <div class="col-6">
             <table class="table table-bordered table-striped justify-content-md-center table-hover table-light">

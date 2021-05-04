@@ -11,8 +11,9 @@ namespace Warehouse.Pages
     [Authorize]
     public class IndexModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            return RedirectToPage("/Items/Index");
         }
     }
 }

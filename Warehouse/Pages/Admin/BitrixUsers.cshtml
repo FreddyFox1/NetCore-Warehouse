@@ -2,15 +2,16 @@
 @model Warehouse.Pages.Admin.BitrixUsersModel
 
 @{
-    ViewData["Title"] = "BitrixUsers";
+    ViewData["Title"] = "Список пользователей Bitrix24";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>BitrixUsers</h1>
+<h1>Список пользователей Bitrix24</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-controller="" asp-action="UpdateList">Обновить список</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -27,23 +28,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.BitrixUser) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.isSigned)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.UserID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.UserID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.UserID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.BitrixUser)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.isSigned)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.UserID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.UserID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.UserID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

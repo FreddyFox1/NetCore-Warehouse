@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service;
 using Warehouse.Services.Bitrix24Service.BitrixAbstractions;
@@ -41,6 +42,11 @@ namespace Warehouse
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
+
+            //var serverVersion = new MySqlServerVersion(new Version(10, 5, 4));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseMySql(Configuration.GetConnectionString("ProdConnection"), serverVersion));
+
             //Настройка пароля для стандартной системы авторизации пользователей
             //Добавление ролей пользователей
             services.AddDefaultIdentity<WarehouseUser>(options =>
@@ -49,13 +55,15 @@ namespace Warehouse
                 options.Password.RequiredLength = 8;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-            }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //Добавляем поддержку MVC  
             services.AddMvc().AddRazorRuntimeCompilation();
             //Добавляем поддержку страниц Razor 
             services.AddRazorPages().AddRazorRuntimeCompilation();
-            //Добавляем политику авторизации  
+            //Добавляем политики авторизации  
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminArea",
@@ -70,10 +78,9 @@ namespace Warehouse
 
             //Добавлем сервис для работы Telegram бота в фоновом режиме 
             services.AddHostedService<TelegramService>();
+            //Сервисы для работы с порталом Bitrix24
             services.AddSingleton<IBitrixUser, BitrixService>();
             services.AddSingleton<IBitrix, BitrixService>();
-            
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -110,7 +117,7 @@ namespace Warehouse
                         name: "default",
                         pattern: "admin/roles",
                         defaults: new { controller = "Roles", action = "Index" });
-                
+
                 endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "admin/roles/Edit/{id?}",
