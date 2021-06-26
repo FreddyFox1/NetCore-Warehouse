@@ -35,3 +35,21 @@
 @section Scripts {
     @RenderSection("Scripts", required: false)
 }
+
+@*<div class="d-flex row p-2">
+    <div class="float-left flex-grow-1">
+        <p class="text-left WordBreaker"><b>Примечание: </b> ${value}</p>
+    </div>
+    <div class="float-right">
+        <a class="btn-sm flex-row-reverse btn btn-info mr-2 text-center text-white" onclick=CreateTask('api/Bitrix/CreateTask?id'+${d.itemID})>Создать задачу</a>
+    </div>
+    <div class="float-right">
+        <a class="btn-sm btn btn-info mr-2 text-center text-white" onclick=Copy('api/Items/CreateCopy?id ='+${d.itemID})>Копировать</a>
+    </div>
+</div>
+
+<div class="h-100 d-flex flex-row justify-content-center align-items-center">
+    <p class="text-left WordBreaker flex-fill ms-auto"><b>Примечание: </b> ${value}</p>
+    <a class="btn-sm flex-row-reverse btn btn-info mr-2 text-center text-white" onclick=CreateTask('api/Bitrix/CreateTask?id'+${d.itemID})>Создать задачу</a>
+    <a class="btn-sm btn btn-info mr-2 text-center text-white" onclick=Copy('api/Items/CreateCopy?id ='+${d.itemID})>Копировать</a>
+</div>*@

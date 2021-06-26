@@ -35,19 +35,14 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
-            [DataType(DataType.Password)]
-            [Display(Name = "Текущий пароль")]
-            public string OldPassword { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Пароль должен быть больше 8 символов.", MinimumLength = 8)]
             [DataType(DataType.Password)]
             [Display(Name = "Новый пароль")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Повторите пароль")]
-            [Compare("NewPassword", ErrorMessage = "Пароли не совпадают. Пожалуйста првоерьте введенные данные и повторите попытку.")]
+            [Compare("NewPassword", ErrorMessage = "Пароли не совпадают.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -76,12 +71,15 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
             }
 
             var user = await _userManager.GetUserAsync(User);
+            
             if (user == null)
             {
                 return NotFound($"Пользователь с ID '{_userManager.GetUserId(User)}' не найден.");
             }
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var changePasswordResult = await _userManager.ResetPasswordAsync(user, token, Input.NewPassword);
+
             if (!changePasswordResult.Succeeded)
             {
                 foreach (var error in changePasswordResult.Errors)

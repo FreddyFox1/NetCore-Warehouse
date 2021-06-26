@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/login"
 @model LoginModel
 
 @{
@@ -8,8 +8,7 @@
 <h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
+            <form id="account" method="post" style="max-width: 500px;">
                 <p class="text-muted">Используйте логин и пароль для входа</p>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -37,7 +36,6 @@
                 <div class="form-group">
                 </div>
             </form>
-        </section>
     </div>
 </div>
 

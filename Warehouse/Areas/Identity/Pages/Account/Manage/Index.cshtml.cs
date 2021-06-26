@@ -20,15 +20,15 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
+        [BindProperty]
         [Display(Name = "Имя пользователя")]
         public string Username { get; set; }
+        [BindProperty]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-
         [TempData]
         public string StatusMessage { get; set; }
-
 
         private async Task LoadAsync(WarehouseUser user)
         {
@@ -62,6 +62,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+            await _userManager.SetUserNameAsync(user, Username);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Данные профиля обновлены";
