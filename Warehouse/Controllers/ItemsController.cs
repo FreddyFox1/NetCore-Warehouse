@@ -36,21 +36,23 @@ namespace Warehouse.Controllers
             {
                 return await DataProtector(filter);
             }
-            else
+
+            switch (filter)
             {
-                if (filter == "NaN")
-                {
-                    return Json(new { data = await _db.Items.Where(a => a.Category.CategoryName == null).ToListAsync() });
-                }
-                else if (filter != "All")
-                {
-                    return Json(new { data = await _db.Items.Where(a => a.Category.CategoryName == filter).ToListAsync() });
-                }
-                else
-                {
-                    return Json(new { data = await _db.Items.ToListAsync() });
-                }
+                case "All":
+                    {
+                        return Json(new { data = await _db.Items.ToListAsync() });
+                    }
+                case "NaN":
+                    {
+                        return Json(new { data = await _db.Items.Where(a => a.Category.CategoryName == null).ToListAsync() });
+                    }
+                default:
+                    {
+                        return Json(new { data = await _db.Items.Where(a => a.Category.CategoryName == filter).ToListAsync() });
+                    }
             }
+
         }
 
         /// <summary>

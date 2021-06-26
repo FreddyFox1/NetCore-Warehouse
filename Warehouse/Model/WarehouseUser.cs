@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace Warehouse.Model
 {
-    // Add profile data for application users by adding properties to the WarehouseUser class
     public class WarehouseUser : IdentityUser
     {
-    }
+        public string PhotoPath { get; set; }
+        public string Name { get; set; }
+   
+    }   
 }
