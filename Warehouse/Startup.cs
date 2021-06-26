@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -55,9 +57,20 @@ namespace Warehouse
                 options.Password.RequiredLength = 8;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                options.LoginPath = new PathString("/Login");
+                options.AccessDeniedPath = new PathString("/AccessDenied");
+                options.LogoutPath = new PathString("/Login");
+                options.SlidingExpiration = true;
+            });
 
             //Добавляем поддержку MVC  
             services.AddMvc().AddRazorRuntimeCompilation();
@@ -75,6 +88,7 @@ namespace Warehouse
                 options.AddPolicy("DriverArea",
                     policy => policy.RequireRole("Driver", "Admin", "User"));
             });
+
 
             //Добавлем сервис для работы Telegram бота в фоновом режиме 
             services.AddHostedService<TelegramService>();

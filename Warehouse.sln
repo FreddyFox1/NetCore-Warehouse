@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warehouse", "Warehouse\Warehouse.csproj", "{0C955B64-1CED-4164-ACC3-C0956AFECC5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warehouse.Tests", "Warehouse.Tests\Warehouse.Tests.csproj", "{00AA4897-6F7E-444D-9323-A1E643ABF563}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warehouse.Tests", "Warehouse.Tests\Warehouse.Tests.csproj", "{00AA4897-6F7E-444D-9323-A1E643ABF563}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -140,7 +140,7 @@ namespace Warehouse.Pages.Items
             ItemGroup = _context.ItemsCategories.Select(a =>
                        new SelectListItem
                        {
-                           Value = a.CategoryName.ToString(),
+                           Value = a.CategoryID.ToString(),
                            Text = a.CategoryName
                        }).ToList();
         }

@@ -25,7 +25,7 @@ namespace Warehouse.Services.Bitrix24Service
             BitrixKeys = _BitrixKeys;
             logger = _logger;
         }
-          
+
         public string CreateTask(Item item)
         {
             try
@@ -79,14 +79,14 @@ namespace Warehouse.Services.Bitrix24Service
             }
         }
 
-        public List<string> GetUsers()
+        public List<string> UpdateUserList()
         {
             throw new NotImplementedException();
         }
 
         public bool isUserCreated()
         {
-            return true;
+            throw new NotImplementedException();
         }
 
         public void SaveUser()

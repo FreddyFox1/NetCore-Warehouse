@@ -187,7 +187,7 @@ function format(d) {
     return `<table width="100%" cellpadding="5" cellspacing="0" border="0">
                 <tr class="bg-white">
                      <div class="d-flex">
-                        <div class="d-flex flex-row">
+                        <div class="d-flex flex-row WordBreaker">
                             <p class="text-left WordBreaker"><b>Примечание: </b> ${value}</p>
                         </div>
                      <div class="d-flex">

@@ -4,7 +4,7 @@ $(document).ready(function () {
     LoadDataTable();
 });
 function LoadDataTable() {
-    dataTable = $('#TableItems').DataTable({
+    dataTable = $('#items').DataTable({
         "order": [[1, "asc"]],
         "ajax": {
             "url": "/api/MoveItems",

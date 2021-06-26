@@ -118,3 +118,9 @@ tr.shown td.details-control {
     color: white;
     background-color: #00bf80;
 }
+
+.WordBreaker {
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+}

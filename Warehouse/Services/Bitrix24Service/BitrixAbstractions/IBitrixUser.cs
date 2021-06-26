@@ -14,19 +14,19 @@ namespace Warehouse.Services.Bitrix24Service.BitrixAbstractions
         /// Получаем список пользователей с их данными из Bitrix24
         /// </summary>
         /// <returns>Возвращает список пользователей</returns>
-        List<string> GetUsers();
-        
+        List<string> UpdateUserList();
+
         /// <summary>
         /// Проверяем существует ли пользователь в БД
         /// </summary>
         /// <returns>Если пользователь существует, то вернет True</returns>
         bool isUserCreated();
-        
+
         /// <summary>
         /// Сохраняем пользователя в базе данных
         /// </summary>
         void SaveUser();
 
-       
+
     }
 }
