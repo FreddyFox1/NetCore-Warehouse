@@ -20,7 +20,9 @@ namespace Warehouse
                 try
                 {
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    await RoleInitializer.InitializeAsync(rolesManager);
+                    await Initializer.InitializeAsync(rolesManager);
+                    var userManager = services.GetRequiredService<UserManager<Model.WarehouseUser>>();
+                    await Initializer.InitializeRootUser(userManager);
                 }
                 catch (Exception ex)
                 {
