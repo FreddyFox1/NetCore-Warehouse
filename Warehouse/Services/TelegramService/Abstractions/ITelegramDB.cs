@@ -10,8 +10,7 @@ namespace Warehouse.Services.TelegramService.Abstractions
     /// </summary>
     interface ITelegramDB
     {
-        void SaveUser();
-        void DeleteUsers();
-        List<TelegramEntity> GetTelegramEntities();
+        void SaveUser(TelegramEntity entity);
+        void DeleteUser();
     }
 }

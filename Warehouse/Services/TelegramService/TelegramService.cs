@@ -12,91 +12,65 @@ using Warehouse.Services.TelegramService.Abstractions;
 using Warehouse.Services.TelegramService.Commands;
 using Warehouse.Model;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace Warehouse.Services.TelegramService
 {
-    internal class TelegramService : IHostedService, ITelegram
+    internal class TelegramService : IHostedService, ITelegram, ITelegramDB
     {
         private static ILogger<TelegramService> logger;
         private Timer timer;
         private static TelegramBotClient telegramClient;
         private readonly IOptions<TelegramKey> telegramKey;
         private static List<CommandBase> CommandsList;
+        private readonly ApplicationDbContext _db;
 
-        public static IReadOnlyList<CommandBase> Commands
-        {
-            get => CommandsList.AsReadOnly();
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="_logger">Получаем логгер для логгирования</param>
-        /// <param name="_telegramKey">Token атвторизации для работы бота Telegram</param>
         public TelegramService(ILogger<TelegramService> _logger,
-                               IOptions<TelegramKey> _telegramKey)
+                               IOptions<TelegramKey> _telegramKey,
+                               ApplicationDbContext db)
         {
             logger = _logger;
             telegramKey = _telegramKey;
             telegramClient = new TelegramBotClient(telegramKey.Value.AuthKey);
+            _db = db;
         }
 
-        /// <summary>
-        /// Подписываемся на событие обновления сообщений, 
-        /// и начинаем прослушивать сообщения которые летят к боту
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            SetCommandList();
+            CreateCommandList();
 
             logger.LogInformation("Telegram service started");
             telegramClient.OnUpdate += OnUpdateReceived;
+            
             timer = new Timer(a =>
             {
                 GetUpdates();
-            },
-                null,
-                TimeSpan.Zero,
-                TimeSpan.FromSeconds(5));
+            }, 
+            null, TimeSpan.Zero, TimeSpan.FromSeconds(8));
 
             return Task.CompletedTask;
         }
+
         public Task StopAsync(CancellationToken cancellationToken)
         {
             logger.LogInformation("Telegram service was stoped");
             return Task.CompletedTask;
         }
 
-        /// <summary>
-        /// Получение обновлений от Telegram API
-        /// </summary>
         public void GetUpdates()
         {
             telegramClient.StartReceiving(Array.Empty<UpdateType>());
         }
 
-        /// <summary>
-        /// Отправка уведомлений
-        /// </summary>
-        public void SendNotification()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Событие получения обновлений
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private static async void OnUpdateReceived(object sender, UpdateEventArgs e)
+        private async void OnUpdateReceived(object sender, UpdateEventArgs e)
         {
             var message = e.Update.Message;
             if (message != null)
             {
                 if (message.Type == MessageType.Text)
                 {
-                    foreach (var command in Commands)
+                    foreach (var command in CommandsList)
                     {
                         if (command.Contains(message.Text))
                         {
@@ -104,16 +78,26 @@ namespace Warehouse.Services.TelegramService
                             break;
                         }
                     }
-                    logger.LogInformation(message.Text);
                 }
 
                 if (message.Type == MessageType.Contact)
                 {
-                    foreach (var command in Commands)
+                    foreach (var command in CommandsList)
                     {
                         if (command.Contains("Contact"))
                         {
                             command.Execute(message, telegramClient);
+
+                            TelegramEntity user = new TelegramEntity()
+                            {
+                                ID = message.Contact.UserId,
+                                ChatID = message.Chat.Id,
+                                FirstName = message.Contact.FirstName,
+                                LastName = message.Contact.LastName,
+                                PhoneNumber = message.Contact.PhoneNumber
+                            };
+
+                            SaveUser(user);
                             break;
                         }
                     }
@@ -122,15 +106,42 @@ namespace Warehouse.Services.TelegramService
             }
         }
 
-        /// <summary>
-        /// Создаем и заполняем список команд бота
-        /// </summary>
-        private void SetCommandList()
+        private void CreateCommandList()
         {
             CommandsList = new List<CommandBase>();
             CommandsList.Add(new StartCommand());
             CommandsList.Add(new SearchCommand());
             CommandsList.Add(new ContactCommand());
+        }
+
+        public void SaveUser(TelegramEntity entity)
+        {
+            bool isExist = GetEntitiyByPhoneNumber(entity.PhoneNumber);
+            if (!isExist)
+            {
+                _db.Add(entity);
+                _db.SaveChangesAsync();
+                logger.LogInformation($"Добавлен новый пользователь с номером {entity.PhoneNumber}");
+            }
+        }
+
+        public bool GetEntitiyByPhoneNumber(string PhoneNumber)
+        {
+            bool isExist = _db.TelegramEntities.Any(x => x.PhoneNumber == PhoneNumber);
+
+            if (isExist == true) logger.LogInformation($"Пользователь с номером {PhoneNumber} уже существует");
+            else logger.LogInformation($"Пользователь с номером {PhoneNumber} не существует");
+
+            return isExist;
+        }
+
+        public void DeleteUser()
+        {
+            throw new NotImplementedException();
+        }
+        public void SendNotification()
+        {
+            throw new NotImplementedException();
         }
     }
 }

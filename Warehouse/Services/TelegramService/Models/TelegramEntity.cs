@@ -13,7 +13,7 @@ namespace Warehouse.Services.TelegramService
         [Display(Name = "ID")]
         public int ID { get; set; }
         [Display(Name = "ID Чата")]
-        public int ChatID { get; set; }
+        public long ChatID { get; set; }
         [Display(Name = "Имя")]
         public string FirstName { get; set; }
         [Display(Name = "Фамилия")]
