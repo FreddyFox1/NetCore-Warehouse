@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service;
-using Warehouse.Services.Bitrix24Service.BitrixAbstractions;
+using Warehouse.Services.Bitrix24Service.Abstractions;
 
 
 namespace Warehouse.Pages.Items

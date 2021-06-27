@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Warehouse.Services.TelegramService.TelegramAbstraction
+namespace Warehouse.Services.TelegramService.Abstractions
 {
     /// <summary>
     /// Интерфейс для работы с Telegram API

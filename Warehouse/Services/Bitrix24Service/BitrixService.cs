@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Warehouse.Model;
-using Warehouse.Services.Bitrix24Service.BitrixAbstractions;
+using Warehouse.Services.Bitrix24Service.Abstractions;
 
 namespace Warehouse.Services.Bitrix24Service
 {

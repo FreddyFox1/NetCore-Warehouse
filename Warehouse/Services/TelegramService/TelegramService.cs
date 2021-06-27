@@ -8,7 +8,7 @@ using Telegram.Bot.Types.Enums;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot.Args;
 using Microsoft.Extensions.Options;
-using Warehouse.Services.TelegramService.TelegramAbstraction;
+using Warehouse.Services.TelegramService.Abstractions;
 using Warehouse.Services.TelegramService.Commands;
 using Warehouse.Model;
 using Microsoft.AspNetCore.Identity;
@@ -21,9 +21,9 @@ namespace Warehouse.Services.TelegramService
         private Timer timer;
         private static TelegramBotClient telegramClient;
         private readonly IOptions<TelegramKey> telegramKey;
-        private static List<Command> CommandsList;
+        private static List<CommandBase> CommandsList;
 
-        public static IReadOnlyList<Command> Commands
+        public static IReadOnlyList<CommandBase> Commands
         {
             get => CommandsList.AsReadOnly();
         }
@@ -92,19 +92,34 @@ namespace Warehouse.Services.TelegramService
         private static async void OnUpdateReceived(object sender, UpdateEventArgs e)
         {
             var message = e.Update.Message;
-            if (message == null || message.Type != MessageType.Text) return;
-            else
+            if (message != null)
             {
-                foreach (var command in Commands)
+                if (message.Type == MessageType.Text)
                 {
-                    if (command.Contains(message.Text))
+                    foreach (var command in Commands)
                     {
-                        command.Execute(message, telegramClient);
-                        break;
+                        if (command.Contains(message.Text))
+                        {
+                            command.Execute(message, telegramClient);
+                            break;
+                        }
+                    }
+                    logger.LogInformation(message.Text);
+                }
+
+                if (message.Type == MessageType.Contact)
+                {
+                    foreach (var command in Commands)
+                    {
+                        if (command.Contains("Contact"))
+                        {
+                            command.Execute(message, telegramClient);
+                            break;
+                        }
                     }
                 }
-                logger.LogInformation(message.Text);
-            };
+                else return;
+            }
         }
 
         /// <summary>
@@ -112,11 +127,10 @@ namespace Warehouse.Services.TelegramService
         /// </summary>
         private void SetCommandList()
         {
-            CommandsList = new List<Command>();
+            CommandsList = new List<CommandBase>();
             CommandsList.Add(new StartCommand());
             CommandsList.Add(new SearchCommand());
+            CommandsList.Add(new ContactCommand());
         }
-
     }
-
 }

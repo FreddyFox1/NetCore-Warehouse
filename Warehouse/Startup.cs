@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service;
-using Warehouse.Services.Bitrix24Service.BitrixAbstractions;
+using Warehouse.Services.Bitrix24Service.Abstractions;
 using Warehouse.Services.TelegramService;
 
 namespace Warehouse

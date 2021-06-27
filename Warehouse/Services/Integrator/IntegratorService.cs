@@ -2,13 +2,13 @@
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
-using Warehouse.Services.Integrator.IntegratorAbstraction;
+using Warehouse.Services.Integrator.Abstraction;
 
 namespace Warehouse.Services.Integrator
 {
     public partial class IntegratorService : IIntegrator
     {
-        public async string ApiRequest(string api, string method)
+        public string ApiRequest(string api, string method)
         {
             throw new NotImplementedException();
         }

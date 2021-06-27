@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Warehouse.Services.Bitrix24Service.BitrixAbstractions
+namespace Warehouse.Services.Bitrix24Service.Abstractions
 {
     /// <summary>
     /// Интерфейс для работы с сущеностями пользователей Bitrix24

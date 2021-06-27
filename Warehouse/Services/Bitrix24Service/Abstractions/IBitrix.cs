@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Warehouse.Model;
 
-namespace Warehouse.Services.Bitrix24Service.BitrixAbstractions
+namespace Warehouse.Services.Bitrix24Service.Abstractions
 {
     /// <summary>
     /// Интерфейс для работы с порталом CRM Bitrix24

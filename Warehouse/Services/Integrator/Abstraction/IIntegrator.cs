@@ -4,9 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Warehouse.Model;
 
-namespace Warehouse.Services.Integrator.IntegratorAbstraction
+namespace Warehouse.Services.Integrator.Abstraction
 {
-
     interface IIntegrator
     {
         /// <summary>

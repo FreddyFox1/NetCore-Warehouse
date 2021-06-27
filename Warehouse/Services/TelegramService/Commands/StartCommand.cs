@@ -1,11 +1,11 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
-using Warehouse.Services.TelegramService.TelegramAbstraction;
+using Warehouse.Services.TelegramService.Abstractions;
 
 namespace Warehouse.Services.TelegramService.Commands
 {
-    public class StartCommand : Command
+    public class StartCommand : CommandBase
     {
         public override string Name => "start";
 
@@ -18,17 +18,18 @@ namespace Warehouse.Services.TelegramService.Commands
         {
             var ChatId = message.Chat.Id;
             var MessageId = message.MessageId;
+            var getContact = KeyboardButton.WithRequestContact("\U0001F4DE" + " Log in");
 
             var ButtonsMenu = new ReplyKeyboardMarkup();
 
             ButtonsMenu.Keyboard = new KeyboardButton[][]{
                 new KeyboardButton[]{
-                    new KeyboardButton("Log in")
+                    getContact
                 },
             };
 
             ButtonsMenu.ResizeKeyboard = true;
-            await client.SendTextMessageAsync(ChatId, "Введите логин и пароль через пробел!", Telegram.Bot.Types.Enums.ParseMode.Default, false, true, replyToMessageId: MessageId, ButtonsMenu);
+            await client.SendTextMessageAsync(ChatId, "Для авторизации в системе отправьте номер телфона", Telegram.Bot.Types.Enums.ParseMode.Default, false, true, replyToMessageId: MessageId, ButtonsMenu);
         }
     }
 }
