@@ -1,13 +1,12 @@
-﻿@page
+﻿@page "/Registration"
 @model RegisterModel
 @{
     ViewData["Title"] = "Создание нового пользователя";
 }
 
-<h1>@ViewData["Title"]</h1>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4>Создание нового аккаунта</h4>
             <hr />
@@ -47,7 +46,7 @@
         <section>
             <h4>Права пользователей</h4>
             <hr />
-            <div>
+            <div class="text-muted">
                 <p>
                     <b>Admin:</b> Имеет доступ ко всем страницам и ресурсам приложения;
                 </p>

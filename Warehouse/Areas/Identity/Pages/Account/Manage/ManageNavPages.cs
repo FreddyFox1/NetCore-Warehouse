@@ -17,6 +17,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
         public static string BitrixUsers => "BitrixUsers";
         public static string Telegram => "Telegram";
         public static string UsersOfSystem => "Users";
+        public static string Integrator => "Integrator";
         #endregion
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
@@ -32,6 +33,8 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
         public static string BitrixUsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, BitrixUsers);
         public static string TelegramNavClass(ViewContext viewContext) => PageNavClass(viewContext, Telegram);
         public static string UsersOfSystemNavClass(ViewContext viewContext) => PageNavClass(viewContext, UsersOfSystem);
+
+        public static string IntegratorNacClass(ViewContext viewContext) => PageNavClass(viewContext, Integrator);
         #endregion
 
         private static string PageNavClass(ViewContext viewContext, string page)
