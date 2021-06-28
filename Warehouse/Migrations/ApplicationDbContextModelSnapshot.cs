@@ -16,7 +16,7 @@ namespace Warehouse.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -351,8 +351,8 @@ namespace Warehouse.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ChatID")
-                        .HasColumnType("int");
+                    b.Property<long>("ChatID")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
@@ -360,11 +360,11 @@ namespace Warehouse.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Notyfication")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("_sendUpdates")
-                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 

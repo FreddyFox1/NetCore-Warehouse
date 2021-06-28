@@ -11,6 +11,8 @@ using System;
 using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service;
 using Warehouse.Services.Bitrix24Service.Abstractions;
+using Warehouse.Services.Integrator;
+using Warehouse.Services.Integrator.Abstraction;
 using Warehouse.Services.TelegramService;
 
 namespace Warehouse
@@ -51,6 +53,7 @@ namespace Warehouse
 
             //Настройка пароля для стандартной системы авторизации пользователей
             //Добавление ролей пользователей
+
             services.AddDefaultIdentity<WarehouseUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -95,6 +98,8 @@ namespace Warehouse
             //Сервисы для работы с порталом Bitrix24
             services.AddSingleton<IBitrixUser, BitrixService>();
             services.AddSingleton<IBitrix, BitrixService>();
+            
+            services.AddScoped<IIntegrator, IntegratorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
