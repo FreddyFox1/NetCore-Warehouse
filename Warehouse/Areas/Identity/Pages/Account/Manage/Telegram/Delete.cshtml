@@ -1,0 +1,49 @@
+﻿@page
+@model Warehouse.Areas.Identity.Pages.Account.Manage.Telegram.DeleteModel
+
+@{
+    ViewData["Title"] = "Удаление";
+}
+
+<h3>Вы уверены что хотите удалить пользователя?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TelegramEntity.ChatID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TelegramEntity.ChatID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TelegramEntity.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TelegramEntity.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TelegramEntity.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TelegramEntity.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TelegramEntity.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TelegramEntity.PhoneNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TelegramEntity.Notyfication)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TelegramEntity.Notyfication)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="TelegramEntity.ID" />
+        <input type="submit" value="Удалить" class="btn btn-danger" />
+        <a class="btn btn-primary" asp-page="../Telegram">Вернуться к списку</a>
+    </form>
+</div>

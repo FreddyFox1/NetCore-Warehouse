@@ -20,7 +20,7 @@ namespace Warehouse.Services.TelegramService
         public string LastName { get; set; }
         [Display(Name = "Номер телефона")]
         public string PhoneNumber { get; set; }
-        [Display(Name = "Доступ к уведомлениям")]
-        public bool _sendUpdates { get; set; } = false;
+        [Display(Name = "Уведомления")]
+        public bool Notyfication { get; set; } = false;
     }
 }

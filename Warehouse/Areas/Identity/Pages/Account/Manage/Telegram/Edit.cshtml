@@ -1,0 +1,55 @@
+﻿@page
+@model Warehouse.Areas.Identity.Pages.Account.Manage.Telegram.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>TelegramEntity</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TelegramEntity.ID" />
+            <div class="form-group">
+                <label asp-for="TelegramEntity.ChatID" class="control-label"></label>
+                <input asp-for="TelegramEntity.ChatID" class="form-control" disabled />
+                <span asp-validation-for="TelegramEntity.ChatID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TelegramEntity.FirstName" class="control-label"></label>
+                <input asp-for="TelegramEntity.FirstName" class="form-control" />
+                <span asp-validation-for="TelegramEntity.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TelegramEntity.LastName" class="control-label"></label>
+                <input asp-for="TelegramEntity.LastName" class="form-control" />
+                <span asp-validation-for="TelegramEntity.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TelegramEntity.PhoneNumber" class="control-label"></label>
+                <input asp-for="TelegramEntity.PhoneNumber" class="form-control" disabled/>
+                <span asp-validation-for="TelegramEntity.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TelegramEntity.Notyfication"/> @Html.DisplayNameFor(model => model.TelegramEntity.Notyfication)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="../Telegram">Вернуться к списку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

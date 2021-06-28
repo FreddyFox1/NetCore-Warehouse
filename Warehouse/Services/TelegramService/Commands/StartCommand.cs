@@ -29,7 +29,8 @@ namespace Warehouse.Services.TelegramService.Commands
             };
 
             ButtonsMenu.ResizeKeyboard = true;
-            await client.SendTextMessageAsync(ChatId, "Для авторизации в системе отправьте номер телфона", Telegram.Bot.Types.Enums.ParseMode.Default, false, true, replyToMessageId: MessageId, ButtonsMenu);
+            await client.SendTextMessageAsync(ChatId, "Для авторизации в системе нажмите кнопку Log in", 
+                Telegram.Bot.Types.Enums.ParseMode.Default, false, true, replyToMessageId: MessageId, ButtonsMenu);
         }
     }
 }

@@ -4,23 +4,20 @@
 @{
     ViewData["Title"] = "Список пользователей";
     ViewData["ActivePage"] = ManageNavPages.UsersOfSystem;
+    int rowCounter = 1;
 }
 <div class="container">
     <div class="row row-cols-1 align-self-center">
-        <div class="col-9">
-            <h2>Список пользователей</h2>
-
-        </div>
-        <div class="col-3 mr-0 ml-0 pr-0">
-            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary form-control text-white">Добавить</a>
+        <div class="col-8">
+            <h3 class="text-center">Список пользователей</h3>
         </div>
     </div>
     <br>
     <div class="row-cols-1">
         <div class="col-7">
-            <table class="table table-bordered table-striped justify-content-md-center table-hover table-light">
+            <table class="table-sm table-bordered table-striped justify-content-md-center table-hover table-light">
                 <tr class="text-center">
-                    <th></th>
+                    <th scope="row"></th>
                     <th>Имя</th>
                     <th>Email</th>
                     <th></th>
@@ -28,44 +25,50 @@
                 </tr>
                 @foreach (var user in Model.Users)
                 {
-                    <tr>
-                        <td>@Model.Users.Count()</td>
+                    <tr valign="middle" data-row="@rowCounter">
+                        <td>@rowCounter</td>
                         <td>@user.UserName</td>
                         <td>@user.Email</td>
                         <td>
                             <a class="btn btn-sm btn-primary" asp-controller="Roles" asp-action="Edit" asp-route-userId="@user.Id">Правка</a>
                         </td>
                         <td>
-                            <form asp-controller="User" asp-route-Id="@user.Id" asp-action="Delete" method="post">
-                                <div class="form-group">
+                            <form class="" asp-controller="User" asp-route-Id="@user.Id" asp-action="Delete" method="post">
+                                <div class="form-group p-1 m-1">
                                     <input type="submit" class="btn btn-sm btn-danger" value="Удалить" />
                                 </div>
                             </form>
                         </td>
                     </tr>
+                    rowCounter++;
                 }
             </table>
         </div>
-        <div class="col-12 text-muted">
-            <section>
-                <h4>Права пользователей</h4>
-                <hr />
-                <div>
-                    <p>
-                        <b>Admin:</b> Имеет доступ ко всем страницам и ресурсам приложения;
-                    </p>
-                    <p>
-                        <b>User:</b> Имеет доступ ко всем страницам, может добавлять, удалять и редактировать записи. Не может управлять добавлением пользователей в систему.
-                    </p>
-                    <p>
-                        <b>Watcher:</b> Имеет доступ только к странице со списком матриц и журналу событий, возможность добавления,редактирования и удаления отключена;
-                    </p>
-                    <p>
-                        <b>Driver:</b> Имеет доступ к странице со списком матриц, журналу событий, перемещение матриц. Возможность добавления, редактирования (кроме изменения ячейки) и удаления отключена.
-                    </p>
+    </div>
 
-                </div>
-            </section>
+        <div class="row col-3 m-auto mr-0 pr-0 pt-4">
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success form-control text-white">Добавить пользователя</a>
         </div>
+
+    <div class="col-8 text-muted pt-4">
+        <section>
+            <h4 class="text-center">Права пользователей</h4>
+            <hr />
+            <div>
+                <p>
+                    <b>Admin:</b> Имеет доступ ко всем страницам и ресурсам приложения;
+                </p>
+                <p>
+                    <b>User:</b> Имеет доступ ко всем страницам, может добавлять, удалять и редактировать записи. Не может управлять добавлением пользователей в систему.
+                </p>
+                <p>
+                    <b>Watcher:</b> Имеет доступ только к странице со списком матриц и журналу событий, возможность добавления,редактирования и удаления отключена;
+                </p>
+                <p>
+                    <b>Driver:</b> Имеет доступ к странице со списком матриц, журналу событий, перемещение матриц. Возможность добавления, редактирования (кроме изменения ячейки) и удаления отключена.
+                </p>
+
+            </div>
+        </section>
     </div>
 </div>

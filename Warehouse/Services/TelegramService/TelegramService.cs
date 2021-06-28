@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot.Args;
 using Microsoft.Extensions.Options;
 using Warehouse.Services.TelegramService.Abstractions;
@@ -13,26 +14,28 @@ using Warehouse.Services.TelegramService.Commands;
 using Warehouse.Model;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace Warehouse.Services.TelegramService
 {
-    internal class TelegramService : IHostedService, ITelegram, ITelegramDB
+    internal class TelegramService : IHostedService, ITelegram, ITelegramDb
     {
         private static ILogger<TelegramService> logger;
         private Timer timer;
         private static TelegramBotClient telegramClient;
         private readonly IOptions<TelegramKey> telegramKey;
         private static List<CommandBase> CommandsList;
-        private readonly ApplicationDbContext _db;
+        private readonly IServiceScopeFactory scopeFactory;
 
         public TelegramService(ILogger<TelegramService> _logger,
                                IOptions<TelegramKey> _telegramKey,
-                               ApplicationDbContext db)
+                               IServiceScopeFactory scopeFactory)
         {
             logger = _logger;
             telegramKey = _telegramKey;
             telegramClient = new TelegramBotClient(telegramKey.Value.AuthKey);
-            _db = db;
+            this.scopeFactory = scopeFactory;
         }
 
 
@@ -42,12 +45,12 @@ namespace Warehouse.Services.TelegramService
 
             logger.LogInformation("Telegram service started");
             telegramClient.OnUpdate += OnUpdateReceived;
-            
+
             timer = new Timer(a =>
             {
                 GetUpdates();
-            }, 
-            null, TimeSpan.Zero, TimeSpan.FromSeconds(8));
+            },
+            null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
 
             return Task.CompletedTask;
         }
@@ -90,14 +93,13 @@ namespace Warehouse.Services.TelegramService
 
                             TelegramEntity user = new TelegramEntity()
                             {
-                                ID = message.Contact.UserId,
                                 ChatID = message.Chat.Id,
                                 FirstName = message.Contact.FirstName,
                                 LastName = message.Contact.LastName,
                                 PhoneNumber = message.Contact.PhoneNumber
                             };
 
-                            SaveUser(user);
+                            await SaveUser(user);
                             break;
                         }
                     }
@@ -114,25 +116,24 @@ namespace Warehouse.Services.TelegramService
             CommandsList.Add(new ContactCommand());
         }
 
-        public void SaveUser(TelegramEntity entity)
+        public async Task SaveUser(TelegramEntity entity)
         {
-            bool isExist = GetEntitiyByPhoneNumber(entity.PhoneNumber);
-            if (!isExist)
+            using (var scope = scopeFactory.CreateScope())
             {
-                _db.Add(entity);
-                _db.SaveChangesAsync();
-                logger.LogInformation($"Добавлен новый пользователь с номером {entity.PhoneNumber}");
+                var _db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                
+                bool isExist = await _db.TelegramEntities
+                    .Where(x => x.PhoneNumber == entity.PhoneNumber)
+                    .AnyAsync();
+                
+                if (!isExist)
+                {
+                    _db.Add(entity);
+                    await _db.SaveChangesAsync();
+                    logger.LogInformation($"Добавлен новый пользователь с номером {entity.PhoneNumber}");
+                }
+                else logger.LogError($"Пользователь с номером {entity.PhoneNumber} уже существует");
             }
-        }
-
-        public bool GetEntitiyByPhoneNumber(string PhoneNumber)
-        {
-            bool isExist = _db.TelegramEntities.Any(x => x.PhoneNumber == PhoneNumber);
-
-            if (isExist == true) logger.LogInformation($"Пользователь с номером {PhoneNumber} уже существует");
-            else logger.LogInformation($"Пользователь с номером {PhoneNumber} не существует");
-
-            return isExist;
         }
 
         public void DeleteUser()

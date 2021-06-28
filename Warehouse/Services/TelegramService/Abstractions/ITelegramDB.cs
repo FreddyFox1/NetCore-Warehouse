@@ -8,9 +8,9 @@ namespace Warehouse.Services.TelegramService.Abstractions
     /// <summary>
     /// Интерфейс для работы с базой данных
     /// </summary>
-    interface ITelegramDB
+    interface ITelegramDb
     {
-        void SaveUser(TelegramEntity entity);
+        Task SaveUser(TelegramEntity entity);
         void DeleteUser();
     }
 }

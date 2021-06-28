@@ -28,17 +28,5 @@ namespace Warehouse.Pages.admin
         {
             Users = await _userManager.Users.ToListAsync();
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> OnPostDelete(string ID)
-        //{
-        //    var User = await _userManager.FindByIdAsync(ID);
-        //    if (User != null)
-        //    {
-        //        await _userManager.DeleteAsync(User);
-        //        return RedirectToPage();
-        //    }
-        //    else return Page();
-        //}
     }
 }

@@ -19,7 +19,7 @@ namespace Warehouse.Pages.admin
             _context = context;
         }
 
-        public IList<TelegramEntity> TelegramEntities { get;set; }
+        public IList<TelegramEntity> TelegramEntities { get; set; }
 
         public async Task OnGetAsync()
         {
