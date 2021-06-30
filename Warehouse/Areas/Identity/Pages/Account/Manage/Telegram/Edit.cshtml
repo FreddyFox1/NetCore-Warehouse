@@ -1,13 +1,12 @@
-﻿@page
+﻿@page "/Telegram/Edit"
 @model Warehouse.Areas.Identity.Pages.Account.Manage.Telegram.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактировать";
 }
 
-<h1>Edit</h1>
+<h3>Редактировать</h3>
 
-<h4>TelegramEntity</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,7 +15,7 @@
             <input type="hidden" asp-for="TelegramEntity.ID" />
             <div class="form-group">
                 <label asp-for="TelegramEntity.ChatID" class="control-label"></label>
-                <input asp-for="TelegramEntity.ChatID" class="form-control" disabled />
+                <input asp-for="TelegramEntity.ChatID" class="form-control" readonly />
                 <span asp-validation-for="TelegramEntity.ChatID" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -31,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="TelegramEntity.PhoneNumber" class="control-label"></label>
-                <input asp-for="TelegramEntity.PhoneNumber" class="form-control" disabled/>
+                <input asp-for="TelegramEntity.PhoneNumber" class="form-control" readonly/>
                 <span asp-validation-for="TelegramEntity.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group form-check">

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Warehouse.Model;
@@ -7,7 +8,7 @@ namespace Warehouse.Controllers
 {
     [Route("api/users")]
     [ApiController]
-    //[Authorize(Roles = "AdminArea")]
+    [Authorize(Policy = "AdminArea")]
     public class UserController: Controller
     {
         private readonly UserManager<WarehouseUser> _userManager;

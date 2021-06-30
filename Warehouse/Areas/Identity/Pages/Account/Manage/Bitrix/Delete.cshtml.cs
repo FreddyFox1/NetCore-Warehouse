@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Warehouse.Services.TelegramService;
+using Warehouse.Model;
 
-namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
+namespace Warehouse.Areas.Identity.Pages.Account.Manage.Bitrix
 {
-    [Authorize(Policy = "AdminArea")]
     public class DeleteModel : PageModel
     {
         private readonly Warehouse.Model.ApplicationDbContext _context;
@@ -18,7 +19,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
         }
 
         [BindProperty]
-        public TelegramEntity TelegramEntity { get; set; }
+        public BitrixUser BitrixUser { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -27,9 +28,9 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
                 return NotFound();
             }
 
-            TelegramEntity = await _context.TelegramEntities.FirstOrDefaultAsync(m => m.ID == id);
+            BitrixUser = await _context.BitrixUsers.FirstOrDefaultAsync(m => m.UserID == id);
 
-            if (TelegramEntity == null)
+            if (BitrixUser == null)
             {
                 return NotFound();
             }
@@ -43,15 +44,15 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
                 return NotFound();
             }
 
-            TelegramEntity = await _context.TelegramEntities.FindAsync(id);
+            BitrixUser = await _context.BitrixUsers.FindAsync(id);
 
-            if (TelegramEntity != null)
+            if (BitrixUser != null)
             {
-                _context.TelegramEntities.Remove(TelegramEntity);
+                _context.BitrixUsers.Remove(BitrixUser);
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("../Telegram");
+            return RedirectToPage("./Index");
         }
     }
 }

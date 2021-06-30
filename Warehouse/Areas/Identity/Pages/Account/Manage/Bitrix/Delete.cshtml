@@ -1,0 +1,37 @@
+﻿@page "/Bitrix/Delete"
+@model Warehouse.Areas.Identity.Pages.Account.Manage.Bitrix.DeleteModel
+
+@{
+    ViewData["Title"] = "Удаление пользователя";
+}
+
+<h3>Вы уверены что хотите удалить пользователя?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BitrixUser.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BitrixUser.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BitrixUser.Surname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BitrixUser.Surname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BitrixUser.isSigned)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BitrixUser.isSigned)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="BitrixUser.UserID" />
+        <input type="submit" value="Удалить" class="btn btn-danger" />
+        <a class="btn btn-primary" asp-page="../Bitrix">Вернуться к списку</a>
+    </form>
+</div>

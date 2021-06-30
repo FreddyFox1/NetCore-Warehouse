@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Warehouse.Model;
-using Warehouse.Services.TelegramService;
 
-namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
+namespace Warehouse.Areas.Identity.Pages.Account.Manage.Bitrix
 {
-    [Authorize(Policy = "AdminArea")]
     public class EditModel : PageModel
     {
         private readonly Warehouse.Model.ApplicationDbContext _context;
@@ -23,7 +20,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
         }
 
         [BindProperty]
-        public TelegramEntity TelegramEntity { get; set; }
+        public BitrixUser BitrixUser { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -32,15 +29,17 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
                 return NotFound();
             }
 
-            TelegramEntity = await _context.TelegramEntities.FirstOrDefaultAsync(m => m.ID == id);
+            BitrixUser = await _context.BitrixUsers.FirstOrDefaultAsync(m => m.UserID == id);
 
-            if (TelegramEntity == null)
+            if (BitrixUser == null)
             {
                 return NotFound();
             }
             return Page();
         }
 
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -48,7 +47,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
                 return Page();
             }
 
-            _context.Attach(TelegramEntity).State = EntityState.Modified;
+            _context.Attach(BitrixUser).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +55,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TelegramEntityExists(TelegramEntity.ID))
+                if (!BitrixUserExists(BitrixUser.UserID))
                 {
                     return NotFound();
                 }
@@ -66,12 +65,12 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Telegram
                 }
             }
 
-            return RedirectToPage("../Telegram");
+            return RedirectToPage("./Index");
         }
 
-        private bool TelegramEntityExists(int id)
+        private bool BitrixUserExists(int id)
         {
-            return _context.TelegramEntities.Any(e => e.ID == id);
+            return _context.BitrixUsers.Any(e => e.UserID == id);
         }
     }
 }

@@ -1,0 +1,44 @@
+﻿@page "/Bitrix/Edit"
+@model Warehouse.Areas.Identity.Pages.Account.Manage.Bitrix.EditModel
+
+@{
+    ViewData["Title"] = "Редактировать";
+}
+
+<h3>Редактировать</h3>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BitrixUser.UserID" />
+            <div class="form-group">
+                <label asp-for="BitrixUser.Name" class="control-label"></label>
+                <input asp-for="BitrixUser.Name" class="form-control" />
+                <span asp-validation-for="BitrixUser.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BitrixUser.Surname" class="control-label"></label>
+                <input asp-for="BitrixUser.Surname" class="form-control" />
+                <span asp-validation-for="BitrixUser.Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="BitrixUser.isSigned" /> @Html.DisplayNameFor(model => model.BitrixUser.isSigned)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="../Bitrix">Вернуться к списку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

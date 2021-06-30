@@ -1,25 +1,17 @@
 ﻿var dataTable;
-var filter = "All";
+
 
 $(document).ready(function () {
-    loadCategoryFilter();
     loadDataTable();
 });
 
-function loadCategoryFilter() {
-    if ((result = localStorage.getItem("category-filter")) != null) {
-        $('#inputGroupSelect04 option[value=' + "\"" + result.innerHTML + "\"" + ']').prop('selected', 'selected');
-        filter = result;
-    }
-    else filter = "All";
-}
 
 function loadDataTable() {
-    dataTable = $('#DT_Items').DataTable({
+    dataTable = $('#LogsData').DataTable({
         "bStateSave": true,
         "order": [[2, "asc"]],
         "ajax": {
-            "url": '/api/Items',
+            "url": '/api/logs/sorted',
             "data": {
                 "filter": function () { return filter; }
             },
@@ -134,57 +126,16 @@ function loadDataTable() {
             "<'row pt-2'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Все"]]
     });
-}
 
-function Delete(url) {
-    swal({
-        title: "Вы уверены?",
-        text: "После удаления вы не сможете восстановить запись",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true
-    }).then((willDelete) => {
-        if (willDelete) {
-            $.ajax({
-                type: "DELETE",
-                url: url,
-                success: function (data) {
-                    if (data.success) {
-                        toastr.success(data.message);
-                        dataTable.ajax.reload();
-                    }
-                    else {
-                        toastr.error(data.message);
-                    }
-                }
-            });
-        }
-    });
-}
 
-function ShowCategory(_filter) {
-    localStorage.setItem("category-filter", _filter);
-    filter = _filter;
-    dataTable.ajax.reload();
-    if (filter != "All") { toastr.success(`Позиции из категории ${filter} загружены`); }
-};
+    function format(d) {
+        console.log(d.itemID);
+        if (d.itemDescription != null)
+            value = d.itemDescription;
+        else
+            value = "Нет примечаний";
 
-$("#ResetCategory").click(function () {
-    localStorage.setItem("category-filter", "All");
-    filter = "All";
-    dataTable.ajax.reload();
-    toastr.success("Фильтр сброшен");
-    $("#inputGroupSelect04").val('All').attr("selected", true);
-});
-
-function format(d) {
-    console.log(d.itemID);
-    if (d.itemDescription != null)
-        value = d.itemDescription;
-    else
-        value = "Нет примечаний";
-
-    return `<table width="100%" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;>
+        return `<table width="100%" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;>
                 <tr class="bg-white">
                      <div class="d-flex">
                          <p class="text-left WordBreaker"><b>Примечание: </b> ${value}</p>
@@ -192,67 +143,18 @@ function format(d) {
                     </div>
                 </tr>
             </table>`;
-}
-
-
-$('#DT_Items').on('click', 'td.details-control', function () {
-    var tr = $(this).closest('tr');
-    var row = dataTable.row(tr);
-    if (row.child.isShown()) {
-        row.child.hide();
-        tr.removeClass('shown');
     }
-    else {
-        row.child(format(row.data())).show();
-        tr.addClass('shown');
-    }
-});
 
-function Copy(url) {
-    swal({
-        title: "Скопировать матрицу?",
-        icon: "success",
-        buttons: true,
-        dangerMode: true
-    }).then((willDelete) => {
-        if (willDelete) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function (data) {
-                    if (data.success) {
-                        toastr.success(data.message);
-                        dataTable.ajax.reload();
-                    }
-                    else
-                        toastr.error(data.message);
-                }
-            });
+
+    $('#DT_Items').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = dataTable.row(tr);
+        if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            row.child(format(row.data())).show();
+            tr.addClass('shown');
         }
     });
-}
-
-function CreateTask(url) {
-    swal({
-        title: "Создать задачу в Bitrix24?",
-        icon: "success",
-        buttons: true,
-        dangerMode: true
-    }).then((willDelete) => {
-        if (willDelete) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function (data) {
-                    if (data.success) {
-                        toastr.success(data.message);
-                        dataTable.ajax.reload();
-                    }
-                    else
-                        toastr.error(data.message);
-                }
-            });
-        }
-    });
-
-}

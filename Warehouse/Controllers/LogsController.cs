@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Warehouse.Model;
 
@@ -28,6 +30,42 @@ namespace Warehouse.Controllers
             {
                 data = await _db.ItemLogs.ToListAsync()
             });
+        }
+
+        [HttpGet("sorted")]
+        public async Task<IActionResult> GetSortLogs()
+        {
+            var Dates = await _db.ItemLogs
+                .Select(x => x.LogDateTransfer.Date)
+                .Distinct()
+                .ToListAsync();
+
+            LogsOfLogsModel LogsList  =  new LogsOfLogsModel();
+            LogsModel LogsArr = new LogsModel();
+
+            foreach (var date in Dates)
+            {
+                var Data = await _db.ItemLogs
+                    .Where(x => x.LogDateTransfer.Date == date)
+                    .ToArrayAsync();
+
+                LogsList.Logs = LogsArr;
+            }
+
+            return Json(new
+            {
+                data = LogsList
+            });
+        }
+
+        public class LogsOfLogsModel
+        {
+            public LogsModel Logs { get; set; }
+        }
+
+        public class LogsModel
+        {
+            public ItemLog[] Logs { get; set; }
         }
     }
 }

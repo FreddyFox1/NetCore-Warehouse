@@ -13,7 +13,7 @@ using Warehouse.Model;
 
 namespace Warehouse.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminArea")]
     public class ResetPasswordModel : PageModel
     {
         private readonly UserManager<WarehouseUser> _userManager;

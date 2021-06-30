@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -77,6 +76,22 @@ namespace Warehouse
 
             //Добавляем поддержку MVC  
             services.AddMvc().AddRazorRuntimeCompilation();
+            
+            services.AddRazorPages().AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AddPageRoute("/Identity/Account/Manage", "/Profile");
+                options.Conventions.AddPageRoute("/Identity/Account/Manage/ChangePassword", "/ChangePassword");
+                options.Conventions.AddPageRoute("/Identity/Account/Manage/Integrator", "/Integrator");
+
+                options.Conventions.AddPageRoute("/Identity/Account/Manage/Bitrix", "/Bitrix");
+                options.Conventions.AddPageRoute("/Identity/Account/Manage/Bitrix/Edit", "/Bitrix/Edit");
+                options.Conventions.AddPageRoute("/Identity/Account/Manage/Bitrix/Delete", "/Bitrix/Delete");
+          
+                options.Conventions.AddPageRoute("/Identity/Account/Manage/Telegram", "/Telegram");
+                options.Conventions.AddPageRoute("/Identity/Account/Manage/Telegram/Edit", "/Telegram/Edit");
+                options.Conventions.AddPageRoute("/Identity/Account/Manage/Telegram/Delete", "/Telegram/Delete");
+            });
+
             //Добавляем поддержку страниц Razor 
             services.AddRazorPages().AddRazorRuntimeCompilation();
             //Добавляем политики авторизации  
@@ -100,6 +115,9 @@ namespace Warehouse
             services.AddSingleton<IBitrix, BitrixService>();
             
             services.AddScoped<IIntegrator, IntegratorService>();
+
+            services.AddSwaggerGen();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -130,8 +148,15 @@ namespace Warehouse
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //app.UseSwagger();
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API V1");
+            //});
+
             app.UseEndpoints(endpoints =>
             {
+               
                 endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "admin/roles",
@@ -149,17 +174,14 @@ namespace Warehouse
 
                 endpoints.MapControllerRoute(
                         name: "default",
-                        pattern: "admin/telegram",
-                        defaults: new { controller = "telegram", action = "Index" });
-
-                endpoints.MapControllerRoute(
-                        name: "default",
                         pattern: "Items/Move",
                         defaults: new { controller = "MoveItems", action = "Index" });
-
+                
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+
+
 
 
         }

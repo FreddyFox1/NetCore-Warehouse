@@ -14,7 +14,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
         public static string ExternalLogins => "ExternalLogins";
         public static string PersonalData => "PersonalData";
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
-        public static string BitrixUsers => "BitrixUsers";
+        public static string Bitrix => "Bitrix";
         public static string Telegram => "Telegram";
         public static string UsersOfSystem => "Users";
         public static string Integrator => "Integrator";
@@ -30,7 +30,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
 
         #region Custom
-        public static string BitrixUsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, BitrixUsers);
+        public static string BitrixUsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, Bitrix);
         public static string TelegramNavClass(ViewContext viewContext) => PageNavClass(viewContext, Telegram);
         public static string UsersOfSystemNavClass(ViewContext viewContext) => PageNavClass(viewContext, UsersOfSystem);
 

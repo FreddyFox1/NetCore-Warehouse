@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Warehouse.Model;
 using Warehouse.Services.TelegramService;
 
-namespace Warehouse.Pages.admin
+namespace Warehouse.Areas.Identity.Pages.Account.Manage
 {
-    public class telegramModel : PageModel
+    [Authorize(Policy = "AdminArea")]
+    public class TelegramModel : PageModel
     {
         private readonly Warehouse.Model.ApplicationDbContext _context;
 
-        public telegramModel(Warehouse.Model.ApplicationDbContext context)
+        public TelegramModel(Warehouse.Model.ApplicationDbContext context)
         {
             _context = context;
         }
