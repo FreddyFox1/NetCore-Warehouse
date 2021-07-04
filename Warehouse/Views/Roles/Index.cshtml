@@ -3,20 +3,27 @@
 @{
     ViewData["Title"] = "Список ролей";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    int rowCounter = 1;
 }
 <h2>Список ролей</h2>
 <hr />
+<div class="col-5">
+    <table class="table-sm table-bordered table-striped justify-content-md-center table-hover table-light">
+        <tr class="text-center">
+            <th scope="row">#</th>
+            <th>Роль</th>
+        </tr>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@rowCounter</td>
+                <td>@role.Name</td>
+            </tr>
+            rowCounter++;
+        }
 
-<div class="col-3 flex-column">
-    @foreach (var role in Model)
-    {
-        <div class="d-flex m-1 p-1 flex-row justify-content-between">
-            <p class="">@role.Name </p>
-            <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
-        </div>
-    }
+    </table>
 </div>
 
-
 <a asp-action="Create" asp-controller="Roles">Добавить роль</a>
-<a asp-page="/Admin/Index">"Список пользователей</a>
+<a asp-page="/Admin" asp-area="Identity">Список пользователей</a>

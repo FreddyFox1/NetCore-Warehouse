@@ -121,7 +121,7 @@ namespace Warehouse.Controllers
                 var _user = _db.Users.FirstOrDefault(a => a.Id == userId);
                 _user.NormalizedUserName = _NormalizeName;
                 await _db.SaveChangesAsync();
-                return RedirectToPage("/Admin/Index");
+                return RedirectToPage("/Account/Manage/Admin", new { area = "Identity" });
             }
             return NotFound();
         }
@@ -140,10 +140,10 @@ namespace Warehouse.Controllers
                 if (!_userManager.IsInRoleAsync(user, "Admin").Result)
                 {
                     await _userManager.DeleteAsync(user);
-                    return RedirectToPage("/Admin/Index");
+                    return RedirectToPage("/Account/Manage/Admin", new { area = "Identity" });
                 }
             }
-            return RedirectToPage("/Admin/Index");
+            return RedirectToPage("/Account/Manage/Admin", new { area = "Identity" });
         }
     }
 }

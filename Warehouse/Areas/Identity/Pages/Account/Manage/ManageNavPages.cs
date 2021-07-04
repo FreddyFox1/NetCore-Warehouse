@@ -16,8 +16,10 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
         public static string Bitrix => "Bitrix";
         public static string Telegram => "Telegram";
-        public static string UsersOfSystem => "Users";
+        public static string Users => "Admin";
         public static string Integrator => "Integrator";
+        public static string Guide => "Guide";
+        public static string Update => "Update";
         #endregion
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
@@ -30,11 +32,12 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
 
         #region Custom
+        public static string UsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, Users);
         public static string BitrixUsersNavClass(ViewContext viewContext) => PageNavClass(viewContext, Bitrix);
         public static string TelegramNavClass(ViewContext viewContext) => PageNavClass(viewContext, Telegram);
-        public static string UsersOfSystemNavClass(ViewContext viewContext) => PageNavClass(viewContext, UsersOfSystem);
-
-        public static string IntegratorNacClass(ViewContext viewContext) => PageNavClass(viewContext, Integrator);
+        public static string IntegratorNavClass(ViewContext viewContext) => PageNavClass(viewContext, Integrator);
+        public static string GuideNavClass(ViewContext viewContext) => PageNavClass(viewContext, Guide);
+        public static string UpdateNavClass(ViewContext viewContext) => PageNavClass(viewContext, Update);
         #endregion
 
         private static string PageNavClass(ViewContext viewContext, string page)

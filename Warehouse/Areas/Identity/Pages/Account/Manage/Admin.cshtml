@@ -1,21 +1,19 @@
-﻿@page
-@using Warehouse.Areas.Identity.Pages.Account.Manage;
-@model Warehouse.Pages.admin.IndexModel
+﻿@page "/Users"
+@model Warehouse.Areas.Identity.Pages.Account.Manage.AdminModel
 @{
-    ViewData["Title"] = "Список пользователей";
-    ViewData["ActivePage"] = ManageNavPages.UsersOfSystem;
     int rowCounter = 1;
+    ViewData["Title"] = "Список пользователей";
 }
 <div class="container">
     <div class="row row-cols-1 align-self-center">
-        <div class="col-8">
+        <div class="col-12">
             <h3 class="text-center">Список пользователей</h3>
         </div>
     </div>
     <br>
     <div class="row-cols-1">
-        <div class="col-7">
-            <table class="table-sm table-bordered table-striped justify-content-md-center table-hover table-light">
+        <div class="col-12">
+            <table class="table table-bordered table-striped justify-content-md-center table-hover table-light">
                 <tr class="text-center">
                     <th scope="row"></th>
                     <th>Имя</th>
@@ -25,15 +23,15 @@
                 </tr>
                 @foreach (var user in Model.Users)
                 {
-                    <tr valign="middle" data-row="@rowCounter">
-                        <td>@rowCounter</td>
-                        <td>@user.UserName</td>
-                        <td>@user.Email</td>
-                        <td>
+                    <tr data-row="@rowCounter">
+                        <td class="align-middle">@rowCounter</td>
+                        <td class="align-middle">@user.UserName</td>
+                        <td class="align-middle">@user.Email</td>
+                        <td class="align-middle" valign="middle" align="center">
                             <a class="btn btn-sm btn-primary" asp-controller="Roles" asp-action="Edit" asp-route-userId="@user.Id">Правка</a>
                         </td>
-                        <td>
-                            <form class="" asp-controller="User" asp-route-Id="@user.Id" asp-action="Delete" method="post">
+                        <td class="align-middle" valign="middle" align="center">
+                            <form asp-controller="User" asp-route-Id="@user.Id" asp-action="Delete" method="post">
                                 <div class="form-group p-1 m-1">
                                     <input type="submit" class="btn btn-sm btn-danger" value="Удалить" />
                                 </div>
@@ -46,11 +44,8 @@
         </div>
     </div>
 
-        <div class="row col-3 m-auto mr-0 pr-0 pt-4">
-            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success form-control text-white">Добавить пользователя</a>
-        </div>
 
-    <div class="col-8 text-muted pt-4">
+    <div class="col-12 text-muted pt-4">
         <section>
             <h4 class="text-center">Права пользователей</h4>
             <hr />
@@ -71,4 +66,8 @@
             </div>
         </section>
     </div>
+</div>
+
+<div class="row col-4 m-auto mr-0 pr-0 pt-4 float-right">
+    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success form-control text-white">Добавить пользователя</a>
 </div>

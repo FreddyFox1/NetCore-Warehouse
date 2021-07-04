@@ -78,16 +78,15 @@ namespace Warehouse.Areas.Identity.Pages.Account
             var role = Request.Form["SelectedRole"];
             returnUrl = returnUrl ?? Url.Content("~/Admin/Index");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)//&& (role != "Нет роли" || role != String.Empty))
+            if (ModelState.IsValid)
             {
-                var user = new WarehouseUser { UserName = Input.UserName, Email = Input.Email, EmailConfirmed = true };
+                var user = new WarehouseUser { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true, Name = Input.UserName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, role);
                     _logger.LogInformation("User created a new account with password.");
-                    ChangeName(user);
                     return LocalRedirect(returnUrl);
                 }
 
@@ -97,18 +96,9 @@ namespace Warehouse.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             var roles = _roleManager.Roles.ToList();
             Staff = new SelectList(roles);
             return Page();
-        }
-
-        private async void ChangeName(WarehouseUser user)
-        {
-            string _NormalizeName = await _userManager.GetEmailAsync(user);
-            var _user = _db.Users.FirstOrDefault(a => a.Id == user.Id);
-            _user.NormalizedUserName = _NormalizeName;
-            await _db.SaveChangesAsync();
         }
     }
 }

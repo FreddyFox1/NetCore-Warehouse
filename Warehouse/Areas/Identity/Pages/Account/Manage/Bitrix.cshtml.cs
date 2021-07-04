@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Warehouse.Model;
 
 namespace Warehouse.Areas.Identity.Pages.Account.Manage
 {
+    [Authorize(Policy = "AdminArea")]
     public class BitrixModel : PageModel
     {
         private readonly ApplicationDbContext _context;

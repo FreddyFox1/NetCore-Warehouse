@@ -5,13 +5,12 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item mr-1">
+        @*<li class="nav-item mr-1">
             <div class="TrackIcon">
                 <div class="score">0</div>
                 <a href="#"><img src="~/icons/truck_50px.png" width="35" height="35" /></a>
             </div>
-
-        </li>
+        </li>*@
 
         <li class="nav-item d-inline-flex align-self-center">
             <div class="rounded-circle user-icon shadow"></div>
@@ -21,7 +20,7 @@
         </li>
         <li class="nav-item d-inline-flex align-self-center">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                <button id="logout" type="submit" class="d-flex align-self-center nav-link btn btn-link text-white but-exit">Выход</button>
+                <button id="logout" type="submit" class="d-flex align-self-center btn btn-link text-white but-exit">Выход</button>
             </form>
         </li>
     }

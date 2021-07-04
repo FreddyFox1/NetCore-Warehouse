@@ -31,14 +31,20 @@ namespace Warehouse.Tests.ControllersTests
         //Manage Account
         [InlineData("/Profile")]
         [InlineData("/ChangePassword")]
-        [InlineData("/Admin")]
-        [InlineData("/Admin/Roles")]
+        
+        [InlineData("/Users")]
+        [InlineData("/Users/Roles")]
+        [InlineData("/Users/Edit")]
+        [InlineData("/Users/Roles/Create")]
+        
         [InlineData("/Telegram")]
         [InlineData("/Telegram/Edit")]
         [InlineData("/Telegram/Delete")]
+        
         [InlineData("/Bitrix")]
         [InlineData("/Bitrix/Edit")]
         [InlineData("/Bitrix/Delete")]
+        
         [InlineData("/Integrator")]
 
         public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
