@@ -11,6 +11,6 @@ namespace Warehouse.Services.Bitrix24Service
     public class BitrixKeys
     {
         public string AuthKey { get; set; }
-        public string ReqUrl { get; set; }
+        public string URL { get; set; }
     }
 }

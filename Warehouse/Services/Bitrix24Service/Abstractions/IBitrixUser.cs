@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Warehouse.Model;
 
 namespace Warehouse.Services.Bitrix24Service.Abstractions
 {
@@ -14,19 +11,13 @@ namespace Warehouse.Services.Bitrix24Service.Abstractions
         /// Получаем список пользователей с их данными из Bitrix24
         /// </summary>
         /// <returns>Возвращает список пользователей</returns>
-        List<string> UpdateUserList();
+        void GetUsers();
 
         /// <summary>
         /// Проверяем существует ли пользователь в БД
         /// </summary>
         /// <returns>Если пользователь существует, то вернет True</returns>
-        bool isUserCreated();
-
-        /// <summary>
-        /// Сохраняем пользователя в базе данных
-        /// </summary>
-        void SaveUser();
-
+        BitrixUser isUserExist(string userId);
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service.Abstractions;
+using Warehouse.Services.Bitrix24Service.Models;
 
 namespace Warehouse.Services.Bitrix24Service
 {
@@ -18,12 +20,14 @@ namespace Warehouse.Services.Bitrix24Service
     {
         private readonly IOptions<BitrixKeys> BitrixKeys;
         private readonly ILogger<BitrixService> logger;
-        private readonly static RestClient RC = new RestClient();
+        private readonly ApplicationDbContext _db;
+        private readonly static RestClient Client = new RestClient();
 
-        public BitrixService(IOptions<BitrixKeys> _BitrixKeys, ILogger<BitrixService> _logger)
+        public BitrixService(IOptions<BitrixKeys> _BitrixKeys, ILogger<BitrixService> _logger, ApplicationDbContext db)
         {
             BitrixKeys = _BitrixKeys;
             logger = _logger;
+            _db = db;
         }
 
         public string CreateTask(Item item)
@@ -58,40 +62,65 @@ namespace Warehouse.Services.Bitrix24Service
 
         public bool PushTask(string _fields, string Article)
         {
-            var Request = new RestRequest(BitrixKeys.Value.ReqUrl
+            var request = new RestRequest(BitrixKeys.Value.URL
                 + BitrixKeys.Value.AuthKey
                 + "/tasks.task.add.json?" + _fields);
-
-            var Response = RC.Post(Request);
-            if (Response.Content.Contains(Article))
-                return true;
-            else return false;
+            var Response = Client.Post(request);
+            logger.LogInformation("Новая задача добавлена в Bitrix24");
+            return Response.Content.Contains(Article) ? true : false;
         }
 
-        public async void SendNotyfication(List<string> BitrixUsers, string message)
+        public async void SendNotyfication(string userId, string message)
         {
-            foreach (var user in BitrixUsers)
+            var request = new RestRequest(BitrixKeys.Value.URL + BitrixKeys.Value.AuthKey + $"/im.notify.json?message={message}&to{userId}");
+            await Client.ExecutePostAsync(request);
+            logger.LogInformation($"Уведомление с текстом [{message}] отправлено пользователю [{userId}]");
+        }
+
+        public async void GetUsers()
+        {
+            var request = new RestRequest(BitrixKeys.Value.URL + BitrixKeys.Value.AuthKey + $"/user.get.json");
+            var response = Client.Execute(request);
+            var data = JsonConvert.DeserializeObject<BitrixJsonData.Root>(response.Content);
+
+            foreach (var item in data.result)
             {
-                var Request = new RestRequest(BitrixKeys.Value.ReqUrl
-                + BitrixKeys.Value.AuthKey
-                + $"/im.notify.json?message={message}&to{user}");
-                await RC.ExecutePostAsync(Request);
+                var user = isUserExist(item.ID);
+
+                if (user != null)
+                {
+                    user.UserId = item.ID;
+                    user.Name = item.NAME;
+                    user.Surname = item.SECOND_NAME;
+                    user.Email = item.EMAIL;
+                    _db.BitrixUsers.Update(user);
+                }
+                else
+                {
+                    var User = new BitrixUser
+                    {
+                        UserId = item.ID,
+                        Name = item.NAME,
+                        Surname = item.SECOND_NAME,
+                        Email = item.EMAIL,
+                        isSigned = false
+                    };
+
+                    await _db.AddAsync(User);
+                }
             }
+            logger.LogInformation("Список пользователей обновлен");
+            await _db.SaveChangesAsync();
         }
 
-        public List<string> UpdateUserList()
+        public BitrixUser isUserExist(string userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool isUserCreated()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveUser()
-        {
-            throw new NotImplementedException();
+            var user = _db.BitrixUsers.Where(x => x.UserId == userId).FirstOrDefault();
+            if (user != null)
+            {
+                return user;
+            }
+            else return null;
         }
     }
 }

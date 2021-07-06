@@ -29,6 +29,6 @@ namespace Warehouse.Services.Bitrix24Service.Abstractions
         /// </summary>
         /// <param name="BitrixUsers">Список пользователей подписаных на уведомления</param>
         /// <param name="message">Сообщение для пользователей</param>
-        void SendNotyfication(List<string> BitrixUsers, string message);
+        void SendNotyfication(string userId, string message);
     }
 }
