@@ -144,17 +144,17 @@ function loadDataTable() {
                 </tr>
             </table>`;
     }
+}
 
-
-    $('#DT_Items').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = dataTable.row(tr);
-        if (row.child.isShown()) {
-            row.child.hide();
-            tr.removeClass('shown');
-        }
-        else {
-            row.child(format(row.data())).show();
-            tr.addClass('shown');
-        }
-    });
+$('#DT_Items').on('click', 'td.details-control', function () {
+    var tr = $(this).closest('tr');
+    var row = dataTable.row(tr);
+    if (row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass('shown');
+    }
+    else {
+        row.child(format(row.data())).show();
+        tr.addClass('shown');
+    }
+});

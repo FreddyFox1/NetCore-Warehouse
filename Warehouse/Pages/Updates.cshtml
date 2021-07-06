@@ -1,0 +1,115 @@
+﻿@page
+@model Warehouse.Pages.UpdatesModel
+@{
+}
+
+<h3 class="pt-2 pb-2 text-center"><b>Обновление v.1.3</b></h3>
+<ul class="pb-5">
+    <li><p>Обновление платформы приложения с версии .NET Core 3.1 до .NET 5.0</p></li>
+    <li><p>Изменение структуры базы данных</p></li>
+    <li><p>Косметические исправления интерфейса</p></li>
+    <li><p>Добавлена возможность изменения пароля пользователя без участия администартора</p></li>
+    <li><p>Обновленный функционал администратора:</p></li>
+    <li><p>Добавлена возможность получать уведомления в Telegram</p></li>
+    <li><p>Добавлена возможность получать уведомления в Bitrix24</p></li>
+</ul>
+
+<hr class="pb-2">
+<h3 class="pt-2 pb-2 text-center"><b>Обновление v.1.2</b></h3>
+<ul class="pb-5">
+    <li class="pt-1">
+        <p><b>Добавлена</b> роль пользователя "Driver";</p>
+    </li>
+    <li>
+        <p><b>Ограничения</b> для роли "Driver" :</p>
+        <ul>
+            <li><p>Отключена возможность удаления матриц;</p></li>
+            <li><p>Изменено отображение "Закрытых матриц";</p></li>
+            <li><p>Отключена возможность редактирования данных матрицы, кроме изменения поля "Ячейка";</p></li>
+            <li><p>Отключена возможность перемещения "Закрытых матриц" на склад "Автозавод", однако перемещение между своии складами не ограничено.</p></li>
+        </ul>
+    </li>
+    <li>
+        <p> <b>Добавлен</b> переключатель "Закрытая позиция";</p>
+        <p>
+            <b>Примечание:</b> <i>
+                при активации не позволяет перемещать матрицу на склад "Автозавод",
+                а так же скрывает все данные о матрице за исключением артикула и номера ячейки у пользователя с ролью "Driver".
+            </i>
+        </p>
+        <a href="/css/icons/item-protector.PNG" data-fancybox><img class="border" height="280" src="/css/icons/item-protector.PNG" /></a>
+
+        <div class="d-flex flex-row justify-content-between pt-5 align-content-center">
+            <span class="">
+                <a href="/css/icons/ProtectItemsDriver.PNG" data-fancybox><img class="border" height="200" src="/css/icons/ProtectItemsDriver.PNG" /></a>
+                <p class="text-center">Вид от лица роли "Driver"</p>
+            </span>
+            <span class="">
+                <a href="/css/icons/ProtectItemsUser.PNG" data-fancybox><img class="border" height="200" src="/css/icons/ProtectItemsUser.PNG" /></a>
+                <p class="text-center">Вид от лица роли "User"</p>
+            </span>
+            <span class="">
+                <a href="/css/icons/ProtectItemsWatcher.PNG" data-fancybox><img class="border" height="200" src="/css/icons/ProtectItemsWatcher.PNG" /></a>
+                <p class="text-center">Вид от лица роли "Watcher"</p>
+            </span>
+        </div>
+    </li>
+    <li class="pt-3">
+        <p><b>Добавлено</b> управление ролями пользователей;</p>
+        <a href="/css/icons/roles-users.PNG" data-fancybox><img class="border" width="200" src="/css/icons/roles-users.PNG" /></a>
+    </li>
+    <li class="pt-3">
+        <p><b>Добавлен</b> блок с выбором страницы сверху;</p>
+        <a href="/css/icons/pages-but.PNG" data-fancybox><img class="border" width="400" src="/css/icons/pages-but.PNG" /></a>
+    </li>
+    <li class="pt-3">
+        <p><b>Добавлена</b> возможность копирования матриц;</p>
+        <a href="/css/icons/copy-item.PNG" data-fancybox><img class="border" width="400" src="/css/icons/copy-item.PNG"></a>
+    </li>
+    <p class="pt-2"><i>Для создания копии необходимо :</i></p>
+    <ol>
+        <li>Выбрать матрицу;</li>
+        <li class="pt-1">Развернуть описание <img src="/css/icons/details_open.png" />;</li>
+        <li class="pt-1">Нажать кнопку <span class="btn-sm btn-info">Копировать</span></li>
+        <li class="pt-1 pb-2">После снизу появляется новая матрица в названии которой указано что это <b class="bg-warning pr-2 pl-2">КОПИЯ</b></li>
+    </ol>
+    <a href="/css/icons/ph-copyItem.PNG" data-fancybox><img class="border" height="250" src="/css/icons/ph-copyItem.PNG" /></a>
+
+    <li class="pt-3">
+        <p><b>Добавлена</b> "ленивая" загрузка изображений;</p>
+    </li>
+    <li class="pt-1">
+        <p><b>Добавлено</b> сохранение настроек пользователя: </p>
+        <ul>
+            <li>Сохранение запроса поисковой строки</li>
+            <li>Сохранение последней выбранной страницы с матрицами</li>
+            <li>Сохранение количественного отбора записей на странице</li>
+        </ul>
+    </li>
+
+
+</ul>
+
+<hr class="pb-2">
+<h3 class="pt-2 pb-2 text-center"><b>Обновление v.1.1</b></h3>
+<ul>
+    <li><span>Исправлен баг со сбросом категории при редактировании информации о мастер модели</span></li>
+    <li><span>Добавлена возможность предпросмотра фотографии перед отправкой на сервер</span></li>
+    <li><span>Исправление мелких багов при создания мастер модели.</span></li>
+    <li>
+        <span>Добавлены прочие склады: Ремонт, Архив, У заказчика. </span>
+        <br>
+        <p><i>При перемещении матрицы в "Архив", только<span style="color:red; font-weight: bold"> администратор системы</span>  может переместить её обратно на склад.</i></p>
+        <a href="/css/icons/upd-21-10-20-3.PNG" data-fancybox><img class="border" height="300" src="/css/icons/upd-21-10-20-3.PNG" /></a>
+    </li>
+    <li>Убран столбец "Дата перемещения" из вкладки "Перемещение матриц" и заменен на "Размеры"</li>
+    <li>
+        <p>Добавлено цветовое окрашивание для колонки со складами в таблице "Список матриц" и "Перемещение матриц"</p>
+        <img class="border" height="260" src="/css/icons/upd-21-10-20-2.PNG" />
+                <a href="/css/icons/upd-21-10-20-3.PNG" data-fancybox><img class="border" height="300" src="/css/icons/upd-21-10-20-3.PNG" /></a>
+    </li>
+    <li>
+        <p>Убрана колонка с примечанием. Для просмотра примечания необходимо нажать на кнопку <img src="/css/icons/details_open.png" />, и кнопку <img src="/css/icons/details_close.png" /> для скрытия</p>
+                <a href="/css/icons/upd-21-10-20-3.PNG" data-fancybox><img class="border" height="300" src="/css/icons/upd-21-10-20-3.PNG" /></a>
+    </li>
+</ul>

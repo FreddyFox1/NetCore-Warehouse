@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service;
@@ -13,6 +15,7 @@ using Warehouse.Services.Bitrix24Service.Abstractions;
 using Warehouse.Services.Integrator;
 using Warehouse.Services.Integrator.Abstraction;
 using Warehouse.Services.TelegramService;
+using static Warehouse.Controllers.AccountController;
 
 namespace Warehouse
 {
@@ -31,38 +34,49 @@ namespace Warehouse
                 .AddJsonFile("TelegramService.json")
                 .AddJsonFile("BitrixService.json");
             Configuration = builder.Build();
-
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //Забираем ключ из JSON файла для работы с API Telegram
             services.Configure<TelegramKey>(Configuration.GetSection("Telegram"));
-            //Забираем ключ из JSON файла для работы с API Bitrix
             services.Configure<BitrixKeys>(Configuration.GetSection("Bitrix"));
 
             //Добавляем контекст для базы данных, и MS SQL в качестве СУБД
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(
-                        Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
 
             //var serverVersion = new MySqlServerVersion(new Version(10, 5, 4));
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseMySql(Configuration.GetConnectionString("ProdConnection"), serverVersion));
 
-            //Настройка пароля для стандартной системы авторизации пользователей
-            //Добавление ролей пользователей
+            //Включаем авторизацию по токену
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true, // Валидация издателя токена
+                            ValidIssuer = AuthOptions.ISSUER,  // Издатель токена
+                            ValidateAudience = true, // Валидация клиента
+                            ValidAudience = AuthOptions.AUDIENCE, // Клиент
+                            ValidateLifetime = true, // Валидация времени существования
+                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),  // Установка ключа безопасности
+                            ValidateIssuerSigningKey = true,  // Валидация ключа безопасности
+                        };
+                    });
 
             services.AddDefaultIdentity<WarehouseUser>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = true;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
-            })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    {
+                        options.SignIn.RequireConfirmedAccount = true;
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequireUppercase = false;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequireLowercase = false;
+                    })
+                        .AddRoles<IdentityRole>()
+                        .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -76,17 +90,20 @@ namespace Warehouse
 
             //Добавляем поддержку MVC  
             services.AddMvc().AddRazorRuntimeCompilation();
-            
+
             services.AddRazorPages().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/Identity/Account/Manage", "/Profile");
                 options.Conventions.AddPageRoute("/Identity/Account/Manage/ChangePassword", "/ChangePassword");
                 options.Conventions.AddPageRoute("/Identity/Account/Manage/Integrator", "/Integrator");
 
+                options.Conventions.AddPageRoute("/Identity/Account/Manage/Admin", "/Users");
+                options.Conventions.AddPageRoute("/Admin/Roles/Edit", "/Users/Edit");
+
                 options.Conventions.AddPageRoute("/Identity/Account/Manage/Bitrix", "/Bitrix");
                 options.Conventions.AddPageRoute("/Identity/Account/Manage/Bitrix/Edit", "/Bitrix/Edit");
                 options.Conventions.AddPageRoute("/Identity/Account/Manage/Bitrix/Delete", "/Bitrix/Delete");
-          
+
                 options.Conventions.AddPageRoute("/Identity/Account/Manage/Telegram", "/Telegram");
                 options.Conventions.AddPageRoute("/Identity/Account/Manage/Telegram/Edit", "/Telegram/Edit");
                 options.Conventions.AddPageRoute("/Identity/Account/Manage/Telegram/Delete", "/Telegram/Delete");
@@ -106,18 +123,8 @@ namespace Warehouse
                 options.AddPolicy("DriverArea",
                     policy => policy.RequireRole("Driver", "Admin", "User"));
             });
-
-
             //Добавлем сервис для работы Telegram бота в фоновом режиме 
             services.AddHostedService<TelegramService>();
-            //Сервисы для работы с порталом Bitrix24
-            services.AddSingleton<IBitrixUser, BitrixService>();
-            services.AddSingleton<IBitrix, BitrixService>();
-            
-            services.AddScoped<IIntegrator, IntegratorService>();
-
-            services.AddSwaggerGen();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -130,7 +137,6 @@ namespace Warehouse
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -148,42 +154,31 @@ namespace Warehouse
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseSwagger();
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API V1");
-            //});
-
             app.UseEndpoints(endpoints =>
             {
-               
                 endpoints.MapControllerRoute(
                         name: "default",
-                        pattern: "admin/roles",
+                        pattern: "Users/Roles",
                         defaults: new { controller = "Roles", action = "Index" });
 
                 endpoints.MapControllerRoute(
                         name: "default",
-                        pattern: "admin/roles/Edit/{id?}",
+                        pattern: "Users/Edit/{id?}",
                         defaults: new { controller = "Roles", action = "Edit" });
 
                 endpoints.MapControllerRoute(
                         name: "default",
-                        pattern: "admin",
-                        defaults: new { controller = "Admin", action = "Index" });
+                        pattern: "Users/Roles/Create",
+                        defaults: new { controller = "Roles", action = "Create" });
 
                 endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "Items/Move",
                         defaults: new { controller = "MoveItems", action = "Index" });
-                
+
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
-
-
-
-
         }
     }
 }
