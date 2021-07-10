@@ -22,7 +22,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
 
         [BindProperty]
         [Display(Name = "Имя пользователя")]
-        public string Username { get; set; }
+        public string Name { get; set; }
         [BindProperty]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -30,13 +30,6 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
         [TempData]
         public string StatusMessage { get; set; }
 
-        private async Task LoadAsync(WarehouseUser user)
-        {
-            var userName = await _userManager.GetUserNameAsync(user);
-            Username = userName;
-            var userEmail = await _userManager.GetEmailAsync(user);
-            Email = userEmail;
-        }
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -45,7 +38,8 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            await LoadAsync(user);
+            Name = user.Name;
+            Email = user.Email;
             return Page();
         }
 
@@ -59,11 +53,11 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage
 
             if (!ModelState.IsValid)
             {
-                await LoadAsync(user);
                 return Page();
             }
-            await _userManager.SetUserNameAsync(user, Username);
 
+            user.Name = Name;
+            await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Данные профиля обновлены";
             return RedirectToPage();

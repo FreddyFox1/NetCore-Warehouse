@@ -46,7 +46,7 @@ namespace Warehouse.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Display(Name = "Имя пользователя")]
-            public string UserName { get; set; }
+            public string Name { get; set; }
 
             [Required]
             [EmailAddress]
@@ -80,7 +80,7 @@ namespace Warehouse.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new WarehouseUser { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true, Name = Input.UserName };
+                var user = new WarehouseUser { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true, Name = Input.Name };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
