@@ -30,7 +30,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Bitrix
                 return NotFound();
             }
 
-            BitrixUser = await _context.BitrixUsers.FirstOrDefaultAsync(m => m.UserID == id);
+            BitrixUser = await _context.BitrixUsers.FirstOrDefaultAsync(m => m.Id == id);
 
             if (BitrixUser == null)
             {
@@ -54,7 +54,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Bitrix
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Account/Manage/Bitrix", new { area = "Identity" });
         }
     }
 }

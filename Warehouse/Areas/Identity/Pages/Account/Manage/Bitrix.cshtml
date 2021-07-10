@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Список пользователей Bitrix24";
+    string name;
 }
 
 <h3>Список пользователей Bitrix24</h3>
@@ -11,13 +12,10 @@
     <thead class="bg-secondary text-white">
         <tr class="text-center">
             <th class="align-middle">
-                @Html.DisplayNameFor(model => model.BitrixUser[0].UserID)
+                Id
             </th>
             <th class="align-middle">
                 @Html.DisplayNameFor(model => model.BitrixUser[0].Name)
-            </th>
-            <th class="align-middle">
-                @Html.DisplayNameFor(model => model.BitrixUser[0].Surname)
             </th>
             <th class="align-middle">
                 @Html.DisplayNameFor(model => model.BitrixUser[0].isSigned)
@@ -35,31 +33,31 @@
                 </td>
             </tr>
         }
-            @foreach (var item in Model.BitrixUser)
-            {
-                <tr>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.UserID)
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.Surname)
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.isSigned)
-                    </td>
-                    <td class="align-middle">
-                        <a class="btn btn-sm btn-primary" asp-page="./Bitrix/Edit" asp-route-id="@item.UserID">Редактировать</a>
-                    </td>
-                    <td class="align-middle">
-                        <a class="btn btn-sm btn-danger" asp-page="./Bitrix/Delete" asp-route-id="@item.UserID">Удалить</a>
-                    </td>
-                </tr>
-            }
+        @foreach (var item in Model.BitrixUser)
+        {
+            name = item.Name + " " + item.Surname;
+            <tr>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td class="align-middle">
+                   @name
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.isSigned)
+                </td>
+                <td class="align-middle">
+                    <a class="btn btn-sm btn-primary" asp-page="./Bitrix/Edit" asp-route-id="@item.Id">Редактировать</a>
+                </td>
+                <td class="align-middle">
+                    <a class="btn btn-sm btn-danger" asp-page="./Bitrix/Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<a class="btn btn-sm btn-primary float-right text-white" href="api/Bitrix"><i class="bi bi-arrow-counterclockwise"></i> Обновить</a>
 
 <div class="font-italic text-muted">
     <p>Здесь отображается список пользователй запросившие подписку на уведомления в приложении Bitrix24.</p>

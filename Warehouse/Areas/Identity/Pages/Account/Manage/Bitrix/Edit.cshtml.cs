@@ -31,7 +31,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Bitrix
                 return NotFound();
             }
 
-            BitrixUser = await _context.BitrixUsers.FirstOrDefaultAsync(m => m.UserID == id);
+            BitrixUser = await _context.BitrixUsers.FirstOrDefaultAsync(m => m.Id == id);
 
             if (BitrixUser == null)
             {
@@ -57,7 +57,7 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Bitrix
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BitrixUserExists(BitrixUser.UserID))
+                if (!BitrixUserExists(BitrixUser.Id))
                 {
                     return NotFound();
                 }
@@ -67,12 +67,12 @@ namespace Warehouse.Areas.Identity.Pages.Account.Manage.Bitrix
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Account/Manage/Bitrix", new { area = "Identity" });
         }
 
         private bool BitrixUserExists(int id)
         {
-            return _context.BitrixUsers.Any(e => e.UserID == id);
+            return _context.BitrixUsers.Any(e => e.Id == id);
         }
     }
 }
