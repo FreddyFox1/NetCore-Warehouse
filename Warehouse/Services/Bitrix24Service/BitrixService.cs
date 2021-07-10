@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Warehouse.Model;
 using Warehouse.Services.Bitrix24Service.Abstractions;
@@ -70,14 +71,21 @@ namespace Warehouse.Services.Bitrix24Service
             return Response.Content.Contains(Article) ? true : false;
         }
 
-        public async void SendNotyfication(string userId, string message)
+        public async void SendNotyfication(string message)
         {
-            var request = new RestRequest(BitrixKeys.Value.URL + BitrixKeys.Value.AuthKey + $"/im.notify.json?message={message}&to{userId}");
-            await Client.ExecutePostAsync(request);
-            logger.LogInformation($"Уведомление с текстом [{message}] отправлено пользователю [{userId}]");
+            var users = _db.BitrixUsers.Where(x => x.isSigned).ToList();
+
+            foreach (var user in users)
+            {
+                var request = new RestRequest(BitrixKeys.Value.URL + BitrixKeys.Value.AuthKey + $"/im.notify.json?message={message}&to={user.UserId}");
+                await Client.ExecutePostAsync(request);
+                await Task.Delay(5000);
+            }
+
+            logger.LogInformation($"Уведомление с текстом [{message}] отправлено пользователям [{(String.Join(", ", users))}]");
         }
 
-        public async void GetUsers()
+        public async Task GetUsersAsync()
         {
             var request = new RestRequest(BitrixKeys.Value.URL + BitrixKeys.Value.AuthKey + $"/user.get.json");
             var response = Client.Execute(request);
@@ -85,7 +93,7 @@ namespace Warehouse.Services.Bitrix24Service
 
             foreach (var item in data.result)
             {
-                var user = isUserExist(item.ID);
+                BitrixUser user = _db.BitrixUsers.FirstOrDefault(x => x.UserId == item.ID);
 
                 if (user != null)
                 {
@@ -95,9 +103,10 @@ namespace Warehouse.Services.Bitrix24Service
                     user.Email = item.EMAIL;
                     _db.BitrixUsers.Update(user);
                 }
+
                 else
                 {
-                    var User = new BitrixUser
+                    var newUser = new BitrixUser
                     {
                         UserId = item.ID,
                         Name = item.NAME,
@@ -105,22 +114,12 @@ namespace Warehouse.Services.Bitrix24Service
                         Email = item.EMAIL,
                         isSigned = false
                     };
-
-                    await _db.AddAsync(User);
+                    await _db.AddAsync(newUser);
                 }
             }
-            logger.LogInformation("Список пользователей обновлен");
-            await _db.SaveChangesAsync();
-        }
 
-        public BitrixUser isUserExist(string userId)
-        {
-            var user = _db.BitrixUsers.Where(x => x.UserId == userId).FirstOrDefault();
-            if (user != null)
-            {
-                return user;
-            }
-            else return null;
+            await _db.SaveChangesAsync();
+            logger.LogInformation("Список пользователей обновлен");
         }
     }
 }

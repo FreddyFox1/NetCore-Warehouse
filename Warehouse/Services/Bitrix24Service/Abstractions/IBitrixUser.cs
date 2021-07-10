@@ -1,4 +1,5 @@
-﻿using Warehouse.Model;
+﻿using System.Threading.Tasks;
+using Warehouse.Model;
 
 namespace Warehouse.Services.Bitrix24Service.Abstractions
 {
@@ -11,13 +12,6 @@ namespace Warehouse.Services.Bitrix24Service.Abstractions
         /// Получаем список пользователей с их данными из Bitrix24
         /// </summary>
         /// <returns>Возвращает список пользователей</returns>
-        void GetUsers();
-
-        /// <summary>
-        /// Проверяем существует ли пользователь в БД
-        /// </summary>
-        /// <returns>Если пользователь существует, то вернет True</returns>
-        BitrixUser isUserExist(string userId);
-
+        Task GetUsersAsync();
     }
 }

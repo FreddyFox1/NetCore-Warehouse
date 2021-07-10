@@ -21,7 +21,7 @@ namespace Warehouse.Pages.Items
     [Authorize(Policy = "DriverArea")]
     public class CreateModel : PageModel
     {
-        private readonly IBitrix _bitrix;
+        private readonly BitrixService _bitrix;
         private readonly UserManager<WarehouseUser> _userManager;
         private IWebHostEnvironment _environment;
         private readonly ApplicationDbContext _context;
@@ -42,7 +42,7 @@ namespace Warehouse.Pages.Items
         public string Creator { get; set; }
         #endregion
 
-        public CreateModel(ApplicationDbContext context, UserManager<WarehouseUser> userManager, IWebHostEnvironment environment, IBitrix bitrix)
+        public CreateModel(ApplicationDbContext context, UserManager<WarehouseUser> userManager, IWebHostEnvironment environment, BitrixService bitrix)
         {
             _userManager = userManager;
             _context = context;
@@ -118,7 +118,9 @@ namespace Warehouse.Pages.Items
 
                     _context.Items.Add(Items);
                     await _context.SaveChangesAsync();
-                    //_bitrix.SendNotyfication(, $"Добавлена новая мастер модель: {Items.ItemName}");
+                    
+                    Task.Run(()=> _bitrix.SendNotyfication($"Добавлена новая мастер модель: {Items.ItemName}"));
+                    
                     return RedirectToPage("./Index");
                 }
                 else

@@ -78,7 +78,7 @@ namespace Warehouse.Controllers
                 ChangeRoleViewModel model = new ChangeRoleViewModel
                 {
                     UserId = user.Id,
-                    UserName = user.UserName,
+                    UserName = user.Name,
                     UserEmail = user.Email,
                     UserRoles = userRoles,
                     AllRoles = allRoles

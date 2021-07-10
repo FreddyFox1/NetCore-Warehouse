@@ -14,7 +14,6 @@ namespace Warehouse.Model
         [Key]
         [Display(Name = "Id")]
         public int Id { get; set; }
-
         [Display(Name = "Id пользователя")]
         public string UserId { get; set; }
         [Display(Name = "Имя")]

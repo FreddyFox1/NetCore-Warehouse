@@ -13,10 +13,10 @@
         </li>*@
 
         <li class="nav-item d-inline-flex align-self-center">
-            <div class="rounded-circle user-icon shadow"></div>
+            <a id="manage" class="nav-link text-muted" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><div class="rounded-circle user-icon shadow"></div></a>
         </li>
         <li class="nav-item d-inline-flex align-self-center">
-            <a id="manage" class="nav-link text-muted" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
+            <a id="manage" class="nav-link text-muted" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserAsync(User).Result.Name</a>
         </li>
         <li class="nav-item d-inline-flex align-self-center">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">

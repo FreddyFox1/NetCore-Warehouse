@@ -125,6 +125,8 @@ namespace Warehouse
             });
             //Добавлем сервис для работы Telegram бота в фоновом режиме 
             services.AddHostedService<TelegramService>();
+            //Bitrix
+            services.AddTransient<BitrixService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
