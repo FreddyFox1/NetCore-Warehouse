@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -23,12 +24,14 @@ namespace Warehouse.Services.Bitrix24Service
         private readonly ILogger<BitrixService> logger;
         private readonly ApplicationDbContext _db;
         private readonly static RestClient Client = new RestClient();
+        private readonly List<BitrixUser> users;
 
         public BitrixService(IOptions<BitrixKeys> _BitrixKeys, ILogger<BitrixService> _logger, ApplicationDbContext db)
         {
             BitrixKeys = _BitrixKeys;
             logger = _logger;
             _db = db;
+            users = _db.BitrixUsers.Where(x => x.isSigned).ToList();
         }
 
         public string CreateTask(Item item)
@@ -73,8 +76,6 @@ namespace Warehouse.Services.Bitrix24Service
 
         public async void SendNotyfication(string message)
         {
-            var users = _db.BitrixUsers.Where(x => x.isSigned).ToList();
-
             foreach (var user in users)
             {
                 var request = new RestRequest(BitrixKeys.Value.URL + BitrixKeys.Value.AuthKey + $"/im.notify.json?message={message}&to={user.UserId}");
@@ -82,7 +83,7 @@ namespace Warehouse.Services.Bitrix24Service
                 await Task.Delay(5000);
             }
 
-            logger.LogInformation($"Уведомление с текстом [{message}] отправлено пользователям [{(String.Join(", ", users))}]");
+            logger.LogInformation($"Уведомление с текстом [{message}] отправлено пользователям");
         }
 
         public async Task GetUsersAsync()

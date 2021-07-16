@@ -141,3 +141,7 @@ tr.shown td.details-control {
 .bg-bitrix {
     background-color: #35c8f4;
 }
+
+.icon-size{
+    font-size: 2em;
+}

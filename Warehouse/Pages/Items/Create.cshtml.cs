@@ -119,7 +119,7 @@ namespace Warehouse.Pages.Items
                     _context.Items.Add(Items);
                     await _context.SaveChangesAsync();
                     
-                    Task.Run(()=> _bitrix.SendNotyfication($"Добавлена новая мастер модель: {Items.ItemName}"));
+                    Task.Factory.StartNew(() => _bitrix.SendNotyfication($"Добавлена новая мастер модель: {Items.ItemName}"));
                     
                     return RedirectToPage("./Index");
                 }

@@ -76,7 +76,7 @@ namespace Warehouse.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             var role = Request.Form["SelectedRole"];
-            returnUrl = returnUrl ?? Url.Content("~/Admin/Index");
+            returnUrl = returnUrl ?? Url.Content("~/Users");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
