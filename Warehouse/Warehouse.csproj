@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\css\icons\" />
     <Folder Include="wwwroot\icons\" />
   </ItemGroup>

@@ -134,3 +134,10 @@ tr.shown td.details-control {
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
 }
+
+.bg-telegram {
+    background-color: #0088cc;
+}
+.bg-bitrix {
+    background-color: #35c8f4;
+}
