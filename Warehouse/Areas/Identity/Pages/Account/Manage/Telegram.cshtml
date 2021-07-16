@@ -5,11 +5,15 @@
     ViewData["Title"] = "Запросы из Telegram";
 }
 
-<h3>Telegram</h3>
-<p>Уведомления для Telegram клиентов</p>
 
-<table class="table table table-bordered">
-    <thead class="bg-primary text-white">
+<div class="row row-cols-1 align-self-center">
+        <div class="col-12">
+            <h3 class="text-center">Список пользователей Telegram</h3>
+        </div>
+    </div>
+    <br>
+ <table class="table table-bordered table-striped justify-content-md-center table-hover table-light">
+ <thead class="bg-telegram text-white">
         <tr class="text-center">
             <th class="align-middle">
                 @Html.DisplayNameFor(model => model.TelegramEntities[0].ChatID)
@@ -26,7 +30,7 @@
             <th class="align-middle"></th>
             <th class="align-middle"></th>
         </tr>
-    </thead>
+        </thead>
     <tbody>
         @if (Model.TelegramEntities.Count == 0)
         {
@@ -52,7 +56,7 @@
                     @Html.DisplayFor(modelItem => item.Notyfication)
                 </td>
                 <td class="align-middle">
-                    <a class="btn btn-sm btn-primary" asp-page="./Telegram/Edit" asp-route-id="@item.ID">Редактировать</a>
+                    <a class="btn btn-sm bg-telegram text-white" asp-page="./Telegram/Edit" asp-route-id="@item.ID">Редактировать</a>
                 </td>
                 <td class="align-middle">
                     <a class="btn btn-sm btn-danger" asp-page="./Telegram/Delete" asp-route-id="@item.ID">Удалить</a>

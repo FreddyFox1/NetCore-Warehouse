@@ -6,10 +6,14 @@
     string name;
 }
 
-<h3>Список пользователей Bitrix24</h3>
-
-<table class="table table-sm table-bordered">
-    <thead class="bg-secondary text-white">
+<div class="row row-cols-1 align-self-center">
+        <div class="col-12">
+            <h3 class="text-center">Список пользователей Bitrix24</h3>
+        </div>
+    </div>
+    <br>
+ <table class="table table-bordered table-striped justify-content-md-center table-hover table-light">
+ <thead class="bg-bitrix text-white">
         <tr class="text-center">
             <th class="align-middle">
                 Id
@@ -23,7 +27,7 @@
             <th class="align-middle"></th>
             <th class="align-middle"></th>
         </tr>
-    </thead>
+        </thead>
     <tbody>
         @if (Model.BitrixUser.Count == 0)
         {
@@ -47,7 +51,7 @@
                     @Html.DisplayFor(modelItem => item.isSigned)
                 </td>
                 <td class="align-middle">
-                    <a class="btn btn-sm btn-primary" asp-page="./Bitrix/Edit" asp-route-id="@item.Id">Редактировать</a>
+                    <a class="btn btn-sm bg-bitrix text-white" asp-page="./Bitrix/Edit" asp-route-id="@item.Id">Редактировать</a>
                 </td>
                 <td class="align-middle">
                     <a class="btn btn-sm btn-danger" asp-page="./Bitrix/Delete" asp-route-id="@item.Id">Удалить</a>
@@ -60,6 +64,6 @@
 <a class="btn btn-sm btn-primary float-right text-white" href="api/Bitrix"><i class="bi bi-arrow-counterclockwise"></i> Обновить</a>
 
 <div class="font-italic text-muted">
-    <p>Здесь отображается список пользователй запросившие подписку на уведомления в приложении Bitrix24.</p>
+    <p>Здесь отображается список пользователй Bitrix24 для которых можно включить уведовления.</p>
     <p>Подробную инструкцию Вы можете прочитать <a href="#">в документации</a></p>
 </div>

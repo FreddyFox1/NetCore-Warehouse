@@ -13,7 +13,7 @@
         </li>*@
 
         <li class="nav-item d-inline-flex align-self-center">
-            <a id="manage" class="nav-link text-muted" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><div class="rounded-circle user-icon shadow"></div></a>
+            <a id="manage" class="nav-link text-muted pr-0" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><div class="rounded-circle user-icon shadow"></div></a>
         </li>
         <li class="nav-item d-inline-flex align-self-center">
             <a id="manage" class="nav-link text-muted" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserAsync(User).Result.Name</a>
