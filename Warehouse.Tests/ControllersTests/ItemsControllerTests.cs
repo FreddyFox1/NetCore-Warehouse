@@ -36,7 +36,7 @@ namespace Warehouse.Tests.ControllersTests
 
             // Assert
             Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
-            Assert.StartsWith("http://localhost/Identity/Account/Login",
+            Assert.StartsWith("http://localhost/Login",
                 response.Headers.Location.OriginalString);
         }
 

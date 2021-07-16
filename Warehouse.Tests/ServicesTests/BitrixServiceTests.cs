@@ -19,7 +19,7 @@ namespace Warehouse.Tests.ServicesTests
         {
             BitrixService bitrixService;
             bitrixService = new BitrixService(GetBitrixKeysOptions(),
-                                              GetLoggerBitrix());
+                                              GetLoggerBitrix(), GetContext());
             var expected = item.ItemArticle;
             var actual = bitrixService.CreateTask(item);
             Assert.Contains(expected, actual);
@@ -29,7 +29,7 @@ namespace Warehouse.Tests.ServicesTests
         public void PushTask_return_True()
         {
             BitrixService bitrixService = new BitrixService(GetBitrixKeysOptions(),
-                                               GetLoggerBitrix());
+                                               GetLoggerBitrix(), GetContext());
             var str = bitrixService.CreateTask(item);
             var actual = bitrixService.PushTask(str, item.ItemArticle);
 
