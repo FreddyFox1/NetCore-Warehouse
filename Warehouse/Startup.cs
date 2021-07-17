@@ -50,23 +50,6 @@ namespace Warehouse
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseMySql(Configuration.GetConnectionString("ProdConnection"), serverVersion));
 
-            //Включаем авторизацию по токену
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
-                    {
-                        options.RequireHttpsMetadata = false;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuer = true, // Валидация издателя токена
-                            ValidIssuer = AuthOptions.ISSUER,  // Издатель токена
-                            ValidateAudience = true, // Валидация клиента
-                            ValidAudience = AuthOptions.AUDIENCE, // Клиент
-                            ValidateLifetime = true, // Валидация времени существования
-                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),  // Установка ключа безопасности
-                            ValidateIssuerSigningKey = true,  // Валидация ключа безопасности
-                        };
-                    });
-
             services.AddDefaultIdentity<WarehouseUser>(options =>
                     {
                         options.SignIn.RequireConfirmedAccount = true;
