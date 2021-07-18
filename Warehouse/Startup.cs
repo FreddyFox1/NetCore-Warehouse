@@ -63,12 +63,9 @@ namespace Warehouse
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
                 options.LoginPath = new PathString("/Login");
                 options.AccessDeniedPath = new PathString("/AccessDenied");
                 options.LogoutPath = new PathString("/Login");
-                options.SlidingExpiration = true;
             });
 
             //Добавляем поддержку MVC  
@@ -136,7 +133,7 @@ namespace Warehouse
             app.UseCors(build => build.AllowAnyOrigin());
 
             app.UseRouting();
-?*
+
             //Подключаем сервисы аутентификации и авторизации
             app.UseAuthentication();
             app.UseAuthorization();
