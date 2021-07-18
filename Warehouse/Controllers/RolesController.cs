@@ -99,14 +99,11 @@ namespace Warehouse.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles, string userName)
         {
-            string _NormalizeName = "";
             // получаем пользователя
             WarehouseUser user = await _userManager.FindByIdAsync(userId);
 
             if (user != null)
             {
-                _NormalizeName = await _userManager.GetEmailAsync(user);
-                await _userManager.SetUserNameAsync(user, userName);
                 // получем список ролей пользователя
                 var userRoles = await _userManager.GetRolesAsync(user);
                 // получаем все роли
@@ -119,7 +116,7 @@ namespace Warehouse.Controllers
                 await _userManager.RemoveFromRolesAsync(user, removedRoles);
                 //_userManager.NormalizeName(_NormalizeName);
                 var _user = _db.Users.FirstOrDefault(a => a.Id == userId);
-                _user.NormalizedUserName = _NormalizeName;
+                _user.Name = userName;
                 await _db.SaveChangesAsync();
                 return RedirectToPage("/Account/Manage/Admin", new { area = "Identity" });
             }

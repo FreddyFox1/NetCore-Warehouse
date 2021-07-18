@@ -21,7 +21,7 @@
     {
         <li><hr /></li>
         <li class="navbar-text text-muted pt-0">Функции администратора</li>
-        
+
         <li class="nav-item">
             <a class="nav-link @ManageNavPages.UsersNavClass(ViewContext)" asp-page="./Admin">
                 <i class="bi bi-people-fill"></i>
@@ -43,18 +43,18 @@
             </a>
         </li>
         @*<li class="nav-item">
-            <a class="nav-link @ManageNavPages.IntegratorNavClass(ViewContext)" asp-page="./Integrator">
-                <i class="bi bi-card-list"></i>
-                Интегратор БД
-            </a>
-        </li>*@
+                <a class="nav-link @ManageNavPages.IntegratorNavClass(ViewContext)" asp-page="./Integrator">
+                    <i class="bi bi-card-list"></i>
+                    Интегратор БД
+                </a>
+            </li>*@
     }
 
     <li><hr /></li>
     <li class="navbar-text text-muted pt-0">Прочее</li>
 
     <li class="nav-item">
-        <a class="nav-link @ManageNavPages.GuideNavClass(ViewContext)" asp-page="">
+        <a href="~/guide/guide.docx" class="nav-link @ManageNavPages.GuideNavClass(ViewContext)">
             <i class="bi bi-question-square-fill"></i> Руководство
         </a>
     </li>
@@ -64,4 +64,5 @@
             <i class="bi bi-code-slash"></i> Об обновлении
         </a>
     </li>
+
 </ul>

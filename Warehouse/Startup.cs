@@ -42,13 +42,13 @@ namespace Warehouse
             services.Configure<BitrixKeys>(Configuration.GetSection("Bitrix"));
 
             //Добавляем контекст для базы данных, и MS SQL в качестве СУБД
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-
-            //var serverVersion = new MySqlServerVersion(new Version(10, 5, 4));
             //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseMySql(Configuration.GetConnectionString("ProdConnection"), serverVersion));
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")));
+
+            var serverVersion = new MySqlServerVersion(new Version(10, 5, 4));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("ProdConnection"), serverVersion));
 
             services.AddDefaultIdentity<WarehouseUser>(options =>
                     {
@@ -106,8 +106,10 @@ namespace Warehouse
                 options.AddPolicy("DriverArea",
                     policy => policy.RequireRole("Driver", "Admin", "User"));
             });
+            
             //Добавлем сервис для работы Telegram бота в фоновом режиме 
-            services.AddHostedService<TelegramService>();
+            //services.AddHostedService<TelegramService>();
+            
             //Bitrix
             services.AddTransient<BitrixService>();
         }
@@ -134,7 +136,7 @@ namespace Warehouse
             app.UseCors(build => build.AllowAnyOrigin());
 
             app.UseRouting();
-
+?*
             //Подключаем сервисы аутентификации и авторизации
             app.UseAuthentication();
             app.UseAuthorization();
